@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 26, 2013 12:19:34 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="haw.ai.komponenten.liefer_komponente.Transportauftrag" table="TRANSPORTAUFTRAG">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="assigned" />
+        </id>
+        <property name="ausgangsDatum" type="java.util.Date">
+            <column name="AUSGANGSDATUM" />
+        </property>
+        <property name="lieferungErfolgt" type="boolean">
+            <column name="LIEFERUNGERFOLGT" />
+        </property>
+        <property name="lieferDatum" type="java.util.Date">
+            <column name="LIEFERDATUM" />
+        </property>
+        <property name="transportdienstleister" type="java.lang.String">
+            <column name="TRANSPORTDIENSTLEISTER" />
+        </property>
+    </class>
+</hibernate-mapping>

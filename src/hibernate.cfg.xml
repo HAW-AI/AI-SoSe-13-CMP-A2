@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="hibernate.connection.password">root</property>
+		<property name="hibernate.connection.url">jdbc:mysql://localhost/aufgabe2</property>
+		<property name="hibernate.connection.username">root</property>
+		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+
+		<mapping resource="mappings/Angebot.hbm.xml" />
+		<mapping resource="mappings/Auftrag.hbm.xml" />
+		<mapping resource="mappings/Kunde.hbm.xml" />
+		<mapping resource="mappings/Lieferung.hbm.xml" />
+		<mapping resource="mappings/Produkt.hbm.xml" />
+		<mapping resource="mappings/Rechnung.hbm.xml" />
+		<mapping resource="mappings/Transportauftrag.hbm.xml" />
+		<mapping resource="mappings/Warenausgangsmeldung.hbm.xml" />
+		<mapping resource="mappings/Zahlungseingang.hbm.xml" />
+	</session-factory>
+</hibernate-configuration>

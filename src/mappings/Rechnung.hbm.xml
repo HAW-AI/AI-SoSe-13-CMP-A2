@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 26, 2013 12:19:34 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="haw.ai.komponenten.rechnungs_komponente.Rechnung" table="RECHNUNG">
+        <id name="id" type="int">
+            <column name="ID" />
+            <generator class="assigned" />
+        </id>
+        <property name="rechnungsDatum" type="java.util.Date">
+            <column name="RECHNUNGSDATUM" />
+        </property>
+        <property name="istBezahlt" type="boolean">
+            <column name="ISTBEZAHLT" />
+        </property>
+        <one-to-one name="auftrag" class="haw.ai.komponenten.bestell_komponente.Auftrag"></one-to-one>
+        <set name="zahlungseingaenge" table="ZAHLUNGSEINGANG" inverse="false" lazy="true">
+            <key>
+                <column name="ID" />
+            </key>
+            <one-to-many class="haw.ai.komponenten.rechnungs_komponente.Zahlungseingang" />
+        </set>
+    </class>
+</hibernate-mapping>
