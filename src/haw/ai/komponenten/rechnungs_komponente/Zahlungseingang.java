@@ -2,14 +2,30 @@ package haw.ai.komponenten.rechnungs_komponente;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class Zahlungseingang {
 
+	@Id
+	@GeneratedValue
 	private int id;
+	@Column(name = "eingangsDatum")
 	private Date eingangsDatum;
+	@Column(name = "betrag")
 	private int betrag;
+	@ManyToOne
+	private Rechnung rechnung;
 	
-	private Zahlungseingang(int id, Date eingangsDatum, int betrag) {
-		this.id = id;
+	protected Zahlungseingang() {
+	}
+
+	protected Zahlungseingang(Rechnung rechnung, Date eingangsDatum, int betrag) {
+		this.rechnung = rechnung;
 		this.eingangsDatum = eingangsDatum;
 		this.betrag = betrag;
 	}

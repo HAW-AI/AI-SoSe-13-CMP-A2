@@ -1,17 +1,28 @@
 package haw.ai.komponenten.liefer_komponente;
 
-import java.util.Set;
-import java.util.HashSet;
 import haw.ai.komponenten.bestell_komponente.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
+@Entity
 public class Lieferung {
 
+	@Id
+	@GeneratedValue
 	private int id;
+	@OneToOne()
 	private Transportauftrag transportauftrag;
+	@OneToOne()
 	private Auftrag auftrag;
 
-	private Lieferung(int id) {
-		this.id = id;
+	protected Lieferung() {
+	}
+
+	protected Lieferung(Auftrag auftrag) {
+		this.setAuftrag(auftrag);
 	}
 
 	public int getId() {
@@ -37,7 +48,4 @@ public class Lieferung {
 	public void setAuftrag(Auftrag auftrag) {
 		this.auftrag = auftrag;
 	}
-	
-	
-
 }

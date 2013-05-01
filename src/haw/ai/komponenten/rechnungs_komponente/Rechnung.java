@@ -5,18 +5,34 @@ import java.util.Set;
 import java.util.HashSet;
 import haw.ai.komponenten.bestell_komponente.*;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+@Entity
 public class Rechnung {
 
+	@Id
+	@GeneratedValue
 	private int id;
+	@Column(name = "rechnungsDatum")
 	private Date rechnungsDatum;
+	@Column(name = "istBezahlt")
 	private boolean istBezahlt = false;
+	@OneToOne()
 	private Auftrag auftrag;
+	@OneToMany
 	private Set<Zahlungseingang> zahlungseingaenge;
 	
-	private Rechnung(int id, Date rechnungsDatum, boolean istBezahlt) {
-		this.id = id;
+	protected Rechnung() {}
+
+	protected Rechnung(Date rechnungsDatum, boolean istBezahlt, Auftrag auftrag) {
 		this.rechnungsDatum = rechnungsDatum;
 		this.istBezahlt = istBezahlt;
+		this.auftrag = auftrag;
 	}
 
 	public int getId() {

@@ -4,17 +4,34 @@ import java.util.Date;
 import haw.ai.komponenten.rechnungs_komponente.*;
 import haw.ai.komponenten.liefer_komponente.*;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+
+@Entity
 public class Auftrag {
 
+	@Id
+	@GeneratedValue
 	private int id;
+	@Column(name = "istAbgeschlossen")
 	private boolean istAbgeschlossen = false;
+	@Column(name = "beauftragtAm")
 	private Date beauftragtAm;
+	@OneToOne()
 	private Angebot angebot;
+	@OneToOne(mappedBy = "auftrag")
 	private Lieferung lieferung;
+	@OneToOne(mappedBy = "auftrag")
 	private Rechnung rechnung;
 
-	private Auftrag(int id, boolean istAbgeschlossen, Date beauftragtAm) {
-		this.setId(id);
+	protected Auftrag() {
+	}
+
+	protected Auftrag(Angebot angebot, boolean istAbgeschlossen, Date beauftragtAm) {
+		this.setAngebot(angebot);
 		this.setIstAbgeschlossen(istAbgeschlossen);
 		this.setBeauftragtAm(beauftragtAm);
 	}

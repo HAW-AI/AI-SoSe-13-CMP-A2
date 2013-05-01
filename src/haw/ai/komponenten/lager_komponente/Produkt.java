@@ -4,16 +4,32 @@ import java.util.Set;
 import java.util.HashSet;
 import haw.ai.komponenten.bestell_komponente.*;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+
+@Entity
 public class Produkt {
 	
+	@Id
+	@GeneratedValue
 	private int id;
+	@Column(name = "name")
 	private String name;
+	@Column(name = "lagerbestand")
 	private int lagerbestand;
+	@ManyToMany()
 	private Set<Angebot> angebote;
+	@OneToMany
 	private Set<Warenausgangsmeldung> warenausgangsmeldungen;
 
-	private Produkt(int id, String name, int lagerbestand) {
-		this.id = id;
+	protected Produkt() {
+	}
+
+	protected Produkt(String name, int lagerbestand) {
 		this.name = name;
 		this.lagerbestand = lagerbestand;
 	}

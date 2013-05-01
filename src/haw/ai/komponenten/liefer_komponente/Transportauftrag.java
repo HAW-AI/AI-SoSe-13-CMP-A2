@@ -2,23 +2,42 @@ package haw.ai.komponenten.liefer_komponente;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+
+@Entity
 public class Transportauftrag {
 
+	@Id
+	@GeneratedValue
 	private int id;
+	@Column(name = "ausgangsDatum")
 	private Date ausgangsDatum;
+	@Column(name = "lieferungErfolgt")
 	private boolean lieferungErfolgt = false;
+	@Column(name = "lieferDatum")
 	private Date lieferDatum;
+	@Column(name = "transportdienstleister")
 	private String transportdienstleister;
+	@OneToOne(mappedBy = "lieferung")
+	private Lieferung lieferung;
 
-	private Transportauftrag(int id, Date ausgangsDatum, boolean lieferungErfolgt,
-			Date lieferDatum, String transportDienstleister) {
-		this.id = id;
+	protected Transportauftrag() {
+	}
+
+	protected Transportauftrag(Lieferung lieferung, Date ausgangsDatum,
+			boolean lieferungErfolgt, Date lieferDatum,
+			String transportDienstleister) {
+		this.lieferung =lieferung;
 		this.ausgangsDatum = ausgangsDatum;
 		this.lieferungErfolgt = lieferungErfolgt;
 		this.lieferDatum = lieferDatum;
 		this.transportdienstleister = transportDienstleister;
 	}
-	
+
 	public void setLieferungErfolgt() {
 		lieferungErfolgt = true;
 	}

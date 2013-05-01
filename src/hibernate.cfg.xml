@@ -10,14 +10,14 @@
 		<property name="hibernate.connection.username">root</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 
-		<mapping resource="mappings/Angebot.hbm.xml" />
-		<mapping resource="mappings/Auftrag.hbm.xml" />
-		<mapping resource="mappings/Kunde.hbm.xml" />
-		<mapping resource="mappings/Lieferung.hbm.xml" />
-		<mapping resource="mappings/Produkt.hbm.xml" />
-		<mapping resource="mappings/Rechnung.hbm.xml" />
-		<mapping resource="mappings/Transportauftrag.hbm.xml" />
-		<mapping resource="mappings/Warenausgangsmeldung.hbm.xml" />
-		<mapping resource="mappings/Zahlungseingang.hbm.xml" />
+		<mapping class="haw.ai.komponenten.bestell_komponente.Angebot" />
+		<mapping class="haw.ai.komponenten.bestell_komponente.Auftrag" />
+		<mapping class="haw.ai.komponenten.kunden_komponente.Kunde" />
+		<mapping class="haw.ai.komponenten.liefer_komponente.Lieferung" />
+		<mapping class="haw.ai.komponenten.liefer_komponente.Transportauftrag" />
+		<mapping class="haw.ai.komponenten.lager_komponente.Produkt" />
+		<mapping class="haw.ai.komponenten.lager_komponente.Warenausgangsmeldung" />
+		<mapping class="haw.ai.komponenten.rechnungs_komponente.Rechnung" />
+		<mapping class="haw.ai.komponenten.rechnungs_komponente.Zahlungseingang" />
 	</session-factory>
 </hibernate-configuration>
