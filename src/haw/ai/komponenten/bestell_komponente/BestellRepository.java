@@ -11,9 +11,11 @@ import haw.ai.komponenten.lager_komponente.Produkt;
 
 public class BestellRepository {
 
-	public static Angebot erstelleAngebot(Kunde kunde, Map<Produkt, Integer> produkte, Date gueltigAb,
-		Date gueltigBis, int gesamtPreis) {
-		Angebot angebot = new Angebot(kunde, produkte, gueltigAb, gueltigBis, gesamtPreis);
+	public static Angebot erstelleAngebot(Kunde kunde,
+			Map<Produkt, Integer> produkte, Date gueltigAb, Date gueltigBis,
+			int gesamtPreis) {
+		Angebot angebot = new Angebot(kunde, produkte, gueltigAb, gueltigBis,
+				gesamtPreis);
 		Session session = HibernateUtil.getSession();
 		session.beginTransaction();
 		session.save(angebot);
@@ -21,12 +23,30 @@ public class BestellRepository {
 		return angebot;
 	}
 
-	public static Auftrag erstelleAuftrag(Angebot angebot,Date beauftragtAm) {
+	public static Auftrag erstelleAuftrag(Angebot angebot, Date beauftragtAm) {
 		Auftrag auftrag = new Auftrag(angebot, false, beauftragtAm);
 		Session session = HibernateUtil.getSession();
 		session.beginTransaction();
 		session.save(auftrag);
 		session.getTransaction().commit();
 		return auftrag;
+	}
+
+	public static void save(Auftrag auftrag) {
+		if (auftrag != null) {
+			Session session = HibernateUtil.getSession();
+			session.beginTransaction();
+			session.save(auftrag);
+			session.getTransaction().commit();
+		}
+	}
+
+	public static void save(Angebot angebot) {
+		if (angebot != null) {
+			Session session = HibernateUtil.getSession();
+			session.beginTransaction();
+			session.save(angebot);
+			session.getTransaction().commit();
+		}
 	}
 }

@@ -2,6 +2,7 @@ package haw.ai.komponenten.bestell_komponente;
 
 import java.util.Date;
 import haw.ai.komponenten.rechnungs_komponente.*;
+import haw.ai.komponenten.common.HESEntity;
 import haw.ai.komponenten.liefer_komponente.*;
 
 import javax.persistence.Column;
@@ -11,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Auftrag {
+public class Auftrag extends HESEntity {
 
 	@Id
 	@GeneratedValue
@@ -30,7 +31,8 @@ public class Auftrag {
 	protected Auftrag() {
 	}
 
-	protected Auftrag(Angebot angebot, boolean istAbgeschlossen, Date beauftragtAm) {
+	protected Auftrag(Angebot angebot, boolean istAbgeschlossen,
+			Date beauftragtAm) {
 		this.setAngebot(angebot);
 		this.setIstAbgeschlossen(istAbgeschlossen);
 		this.setBeauftragtAm(beauftragtAm);
@@ -69,7 +71,14 @@ public class Auftrag {
 	}
 
 	public void setAngebot(Angebot angebot) {
-		this.angebot = angebot;
+		if (angebot != null) {
+			if (this.angebot == null
+					|| (this.angebot != null && (this.angebot.getId() != angebot
+							.getId()))) {
+				this.angebot = angebot;
+				angebot.setAuftrag(this);
+			}
+		}
 	}
 
 	public Lieferung getLieferung() {
@@ -77,7 +86,14 @@ public class Auftrag {
 	}
 
 	public void setLieferung(Lieferung lieferung) {
-		this.lieferung = lieferung;
+		if (lieferung != null) {
+			if (this.lieferung == null
+					|| (this.lieferung != null && (this.lieferung.getId() != lieferung
+							.getId()))) {
+				this.lieferung = lieferung;
+				lieferung.setAuftrag(this);
+			}
+		}
 	}
 
 	public Rechnung getRechnung() {
@@ -85,7 +101,14 @@ public class Auftrag {
 	}
 
 	public void setRechnung(Rechnung rechnung) {
-		this.rechnung = rechnung;
+		if (rechnung != null) {
+			if (this.rechnung == null
+					|| (this.rechnung != null && (this.rechnung.getId() != rechnung
+							.getId()))) {
+				this.rechnung = rechnung;
+				rechnung.setAuftrag(this);
+			}
+		}
 	}
 
 }

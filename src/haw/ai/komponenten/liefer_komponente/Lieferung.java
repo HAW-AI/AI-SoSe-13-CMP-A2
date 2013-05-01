@@ -1,21 +1,22 @@
 package haw.ai.komponenten.liefer_komponente;
 
 import haw.ai.komponenten.bestell_komponente.*;
+import haw.ai.komponenten.common.HESEntity;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Lieferung {
+public class Lieferung extends HESEntity {
 
 	@Id
 	@GeneratedValue
 	private int id;
-	@OneToOne()
+	@OneToOne(mappedBy = "lieferung")
 	private Transportauftrag transportauftrag;
-	@OneToOne()
+	@OneToOne
 	private Auftrag auftrag;
 
 	protected Lieferung() {
@@ -38,7 +39,14 @@ public class Lieferung {
 	}
 
 	public void setTransportauftrag(Transportauftrag transportauftrag) {
-		this.transportauftrag = transportauftrag;
+		if (transportauftrag != null) {
+			if (this.transportauftrag == null
+					|| (this.transportauftrag != null && (this.transportauftrag
+							.getId() != transportauftrag.getId()))) {
+				this.transportauftrag = transportauftrag;
+				transportauftrag.setLieferung(this);
+			}
+		}
 	}
 
 	public Auftrag getAuftrag() {
@@ -46,6 +54,13 @@ public class Lieferung {
 	}
 
 	public void setAuftrag(Auftrag auftrag) {
-		this.auftrag = auftrag;
+		if (auftrag != null) {
+			if (this.auftrag == null
+					|| (this.auftrag != null && (this.auftrag.getId() != auftrag
+							.getId()))) {
+				this.auftrag = auftrag;
+				auftrag.setLieferung(this);
+			}
+		}
 	}
 }

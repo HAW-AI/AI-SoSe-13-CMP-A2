@@ -3,6 +3,7 @@ package haw.ai.komponenten.lager_komponente;
 import java.util.Set;
 import java.util.HashSet;
 import haw.ai.komponenten.bestell_komponente.*;
+import haw.ai.komponenten.common.HESEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,8 +13,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Produkt {
-	
+public class Produkt extends HESEntity {
+
 	@Id
 	@GeneratedValue
 	private int id;
@@ -59,7 +60,18 @@ public class Produkt {
 	}
 
 	public void setAngebote(Set<Angebot> angebote) {
-		this.angebote = angebote;
+		if (angebote != null) {
+			this.angebote = angebote;
+		}
+	}
+
+	public void addAngebot(Angebot angebot) {
+		if (angebot != null) {
+			if (this.angebote == null) {
+				this.angebote = new HashSet<Angebot>();
+			}
+			this.angebote.add(angebot);
+		}
 	}
 
 	public Set<Warenausgangsmeldung> getWarenausgangsmeldungen() {
@@ -68,7 +80,23 @@ public class Produkt {
 
 	public void setWarenausgangsmeldungen(
 			Set<Warenausgangsmeldung> warenausgangsmeldungen) {
-		this.warenausgangsmeldungen = warenausgangsmeldungen;
+		if (warenausgangsmeldungen != null) {
+			this.warenausgangsmeldungen = warenausgangsmeldungen;
+			for (Warenausgangsmeldung wa : warenausgangsmeldungen) {
+				wa.setProdukt(this);
+			}
+		}
+	}
+
+	public void addWarenausgangsmeldung(
+			Warenausgangsmeldung warenausgangsmeldung) {
+		if (warenausgangsmeldung != null) {
+			if (this.warenausgangsmeldungen == null) {
+				this.warenausgangsmeldungen = new HashSet<Warenausgangsmeldung>();
+			}
+			this.warenausgangsmeldungen.add(warenausgangsmeldung);
+			warenausgangsmeldung.setProdukt(this);
+		}
 	}
 
 	public void setLagerbestand(int lagerbestand) {

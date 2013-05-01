@@ -1,5 +1,7 @@
 package haw.ai.komponenten.liefer_komponente;
 
+import haw.ai.komponenten.common.HESEntity;
+
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -9,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Transportauftrag {
+public class Transportauftrag extends HESEntity {
 
 	@Id
 	@GeneratedValue
@@ -22,7 +24,7 @@ public class Transportauftrag {
 	private Date lieferDatum;
 	@Column(name = "transportdienstleister")
 	private String transportdienstleister;
-	@OneToOne(mappedBy = "lieferung")
+	@OneToOne
 	private Lieferung lieferung;
 
 	protected Transportauftrag() {
@@ -31,7 +33,7 @@ public class Transportauftrag {
 	protected Transportauftrag(Lieferung lieferung, Date ausgangsDatum,
 			boolean lieferungErfolgt, Date lieferDatum,
 			String transportDienstleister) {
-		this.lieferung =lieferung;
+		this.lieferung = lieferung;
 		this.ausgangsDatum = ausgangsDatum;
 		this.lieferungErfolgt = lieferungErfolgt;
 		this.lieferDatum = lieferDatum;
@@ -80,6 +82,21 @@ public class Transportauftrag {
 
 	public void setTransportdienstleister(String transportdienstleister) {
 		this.transportdienstleister = transportdienstleister;
+	}
+
+	public Lieferung getLieferung() {
+		return lieferung;
+	}
+
+	public void setLieferung(Lieferung lieferung) {
+		if (lieferung != null) {
+			if (this.lieferung == null
+					|| (this.lieferung != null && (this.lieferung.getId() != lieferung
+							.getId()))) {
+				this.lieferung = lieferung;
+				lieferung.setTransportauftrag(this);
+			}
+		}
 	}
 
 }

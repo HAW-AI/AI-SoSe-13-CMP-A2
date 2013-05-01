@@ -12,19 +12,19 @@ public class HibernateUtil {
 	private static SessionFactory buildSessionFactory() {
 		try {
 			Configuration conf = new Configuration().configure();
-	        SchemaExport schema = new SchemaExport(conf);
-	        schema.create(true, true);
-            return conf.buildSessionFactory();
-        } catch (Throwable e) {
-            System.err.println("SessionFactory creation failed." + e);
-            throw new ExceptionInInitializerError(e);
-        }
+			SchemaExport schema = new SchemaExport(conf);
+			schema.create(true, true);
+			return conf.buildSessionFactory();
+		} catch (Throwable e) {
+			System.err.println("SessionFactory creation failed." + e);
+			throw new ExceptionInInitializerError(e);
+		}
 	}
-	
+
 	public static SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
-	
+		return sessionFactory;
+	}
+
 	public static Session getSession() {
 		return getSessionFactory().openSession();
 	}

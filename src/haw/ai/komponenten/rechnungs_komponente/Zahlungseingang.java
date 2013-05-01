@@ -1,5 +1,7 @@
 package haw.ai.komponenten.rechnungs_komponente;
 
+import haw.ai.komponenten.common.HESEntity;
+
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -9,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Zahlungseingang {
+public class Zahlungseingang extends HESEntity {
 
 	@Id
 	@GeneratedValue
@@ -20,7 +22,7 @@ public class Zahlungseingang {
 	private int betrag;
 	@ManyToOne
 	private Rechnung rechnung;
-	
+
 	protected Zahlungseingang() {
 	}
 
@@ -53,5 +55,20 @@ public class Zahlungseingang {
 	public void setBetrag(int betrag) {
 		this.betrag = betrag;
 	}
-	
+
+	public Rechnung getRechnung() {
+		return rechnung;
+	}
+
+	public void setRechnung(Rechnung rechnung) {
+		if (rechnung != null) {
+			if (this.rechnung == null
+					|| (this.rechnung != null && (this.rechnung.getId() != rechnung
+							.getId()))) {
+				this.rechnung = rechnung;
+				rechnung.addZahlungseingang(this);
+			}
+		}
+	}
+
 }

@@ -1,9 +1,11 @@
 package haw.ai.komponenten.bestell_komponente;
 
+import haw.ai.komponenten.common.HESEntity;
 import haw.ai.komponenten.kunden_komponente.Kunde;
 import haw.ai.komponenten.lager_komponente.Produkt;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.CollectionTable;
@@ -13,12 +15,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyColumn;
+import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Angebot {
+public class Angebot extends HESEntity {
 
 	@Id
 	@GeneratedValue
@@ -27,8 +32,6 @@ public class Angebot {
 	private Date gueltigAb;
 	@Column(name = "gueltigBis")
 	private Date gueltigBis;
-	@Column(name = "menge")
-	private int menge;
 	@Column(name = "gesamtPreis")
 	private int gesamtPreis;
 	@ManyToOne
@@ -37,22 +40,21 @@ public class Angebot {
 	private Auftrag auftrag;
 
 	@ElementCollection
-    @MapKeyColumn(name="id")
-    @Column(name="value")
-    @CollectionTable(name="angebot_produkt", joinColumns=@JoinColumn(name="id"))
+	@CollectionTable(name = "Angebot_Produkt", joinColumns = @JoinColumn(name = "angebot_id"))
+	@MapKeyJoinColumn(name = "produkt_id")
+	@Column(name = "menge")
 	private Map<Produkt, Integer> produkte;
 
 	protected Angebot() {
 	}
 
-	protected Angebot(Kunde kunde, Map<Produkt, Integer> produkte, Date gueltigAb, Date gueltigBis,
-			int gesamtPreis) {
+	protected Angebot(Kunde kunde, Map<Produkt, Integer> produkte,
+			Date gueltigAb, Date gueltigBis, int gesamtPreis) {
 		this.setKunde(kunde);
 		this.setProdukte(produkte);
 		this.setGueltigAb(gueltigAb);
 		this.setGueltigBis(gueltigBis);
 		this.setGesamtPreis(gesamtPreis);
-		this.setMenge(menge);
 	}
 
 	public int getId() {
@@ -79,14 +81,6 @@ public class Angebot {
 		this.gueltigBis = gueltigBis;
 	}
 
-	public int getMenge() {
-		return menge;
-	}
-
-	public void setMenge(int menge) {
-		this.menge = menge;
-	}
-
 	public int getGesamtPreis() {
 		return gesamtPreis;
 	}
@@ -100,9 +94,13 @@ public class Angebot {
 	}
 
 	public void setKunde(Kunde kunde) {
-		if (this.kunde.getId() != kunde.getId()) {
-			this.kunde = kunde;
-			this.kunde.addAngebot(this);
+		if (kunde != null) {
+			if (this.kunde == null
+					|| (this.kunde != null && (this.kunde.getId() != kunde
+							.getId()))) {
+				this.kunde = kunde;
+				kunde.addAngebot(this);
+			}
 		}
 	}
 
@@ -111,7 +109,14 @@ public class Angebot {
 	}
 
 	public void setAuftrag(Auftrag auftrag) {
-		this.auftrag = auftrag;
+		if (auftrag != null) {
+			if (this.auftrag == null
+					|| (this.auftrag != null && (this.auftrag.getId() != auftrag
+							.getId()))) {
+				this.auftrag = auftrag;
+				auftrag.setAngebot(this);
+			}
+		}
 	}
 
 	public Map<Produkt, Integer> getProdukte() {
@@ -119,26 +124,36 @@ public class Angebot {
 	}
 
 	public void setProdukte(Map<Produkt, Integer> produkte) {
-		this.produkte = produkte;
+		if (produkte != null) {
+			this.produkte = produkte;
+			for (Produkt produkt : produkte.keySet()) {
+				produkt.addAngebot(this);
+			}
+		}
 	}
-	
-//	public void addProdukt(Produkt produkt, Integer menge) {
-//		if (this.produkte == null) {
-//			this.produkte = new HashMap<Produkt, Integer>();
-//		}
-//		if(this.produkte.put(produkt, menge)) {
-//			produkt.addAngebot(this, menge);
-//		}
-//	}
-//
-//	public void removeProdukt(Produkt produkt) {
-//		if (this.produkte != null) {
-//			if (this.produkte.containsKey(produkt)) {
-//				this.produkte.remove(produkt);
-//				produkt.removeAngebot(this);
-//			}
-//		}
-//	}
-//
+
+	public void addProdukt(Produkt produkt, Integer menge) {
+		if (produkt != null) {
+			if (this.produkte == null) {
+				this.produkte = new HashMap<Produkt, Integer>();
+			}
+			if (!this.produkte.containsKey(produkt)) {
+				this.produkte.put(produkt, menge);
+				produkt.addAngebot(this);
+			}
+		}
+	}
+
+	// public void removeProdukt(Produkt produkt) {
+	// if (produkt != null) {
+	// if (this.produkte == null) {
+	// this.produkte = new HashMap<Produkt, Integer>();
+	// }
+	// if (this.produkte.containsKey(produkt)) {
+	// this.produkte.remove(produkt);
+	// produkt.removeAngebot(this);
+	// }
+	// }
+	// }
 
 }

@@ -18,9 +18,9 @@ public class LieferRepository {
 		return lieferung;
 	}
 
-	public static Transportauftrag erstelleTransportauftrag(Lieferung lieferung,
-			Date ausgangsDatum, boolean lieferungErfolgt, Date lieferDatum,
-			String transportDienstleister) {
+	public static Transportauftrag erstelleTransportauftrag(
+			Lieferung lieferung, Date ausgangsDatum, boolean lieferungErfolgt,
+			Date lieferDatum, String transportDienstleister) {
 		Transportauftrag transportauftrag = new Transportauftrag(lieferung,
 				ausgangsDatum, lieferungErfolgt, lieferDatum,
 				transportDienstleister);
@@ -29,6 +29,24 @@ public class LieferRepository {
 		session.save(transportauftrag);
 		session.getTransaction().commit();
 		return transportauftrag;
+	}
+
+	public static void save(Lieferung lieferung) {
+		if (lieferung != null) {
+			Session session = HibernateUtil.getSession();
+			session.beginTransaction();
+			session.save(lieferung);
+			session.getTransaction().commit();
+		}
+	}
+
+	public static void save(Transportauftrag transportauftrag) {
+		if (transportauftrag != null) {
+			Session session = HibernateUtil.getSession();
+			session.beginTransaction();
+			session.save(transportauftrag);
+			session.getTransaction().commit();
+		}
 	}
 
 }

@@ -11,22 +11,43 @@ import org.hibernate.Session;
 
 public class RechnungsRepository {
 
-	public static Rechnung erstelleRechnung(Date rechnungsDatum, boolean istBezahlt, Auftrag auftrag) {
-			Rechnung rechnung = new Rechnung(rechnungsDatum, istBezahlt, auftrag);
+	public static Rechnung erstelleRechnung(Date rechnungsDatum,
+			boolean istBezahlt, Auftrag auftrag) {
+		Rechnung rechnung = new Rechnung(rechnungsDatum, istBezahlt, auftrag);
+		Session session = HibernateUtil.getSession();
+		session.beginTransaction();
+		session.save(rechnung);
+		session.getTransaction().commit();
+		return rechnung;
+	}
+
+	public static Zahlungseingang erstelleZahlungseingang(Rechnung rechnung,
+			Date eingangsDatum, int betrag) {
+		Zahlungseingang zahlungseingang = new Zahlungseingang(rechnung,
+				eingangsDatum, betrag);
+		Session session = HibernateUtil.getSession();
+		session.beginTransaction();
+		session.save(zahlungseingang);
+		session.getTransaction().commit();
+		return zahlungseingang;
+	}
+
+	public static void save(Rechnung rechnung) {
+		if (rechnung != null) {
 			Session session = HibernateUtil.getSession();
 			session.beginTransaction();
 			session.save(rechnung);
 			session.getTransaction().commit();
-			return rechnung;
 		}
+	}
 
-		public static Zahlungseingang erstelleZahlungseingang(Rechnung rechnung, Date eingangsDatum, int betrag) {
-			Zahlungseingang zahlungseingang = new Zahlungseingang(rechnung, eingangsDatum, betrag);
+	public static void save(Zahlungseingang zahlungseingang) {
+		if (zahlungseingang != null) {
 			Session session = HibernateUtil.getSession();
 			session.beginTransaction();
 			session.save(zahlungseingang);
 			session.getTransaction().commit();
-			return zahlungseingang;
 		}
-	
+	}
+
 }

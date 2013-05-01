@@ -6,14 +6,37 @@ import haw.ai.komponenten.lager_komponente.Produkt;
 import java.util.Date;
 import java.util.Map;
 
-public class Bestellfassade {
+public class BestellFassade {
 
-	public Angebot erstelleAngebot(Kunde kunde, Map<Produkt, Integer> produkte, Date gueltigAb, Date gueltigBis, int gesamtPreis) {
-		return BestellRepository.erstelleAngebot(kunde, produkte, gueltigAb, gueltigBis, gesamtPreis);
+	public static Angebot erstelleAngebot(Kunde kunde,
+			Map<Produkt, Integer> produkte, Date gueltigAb, Date gueltigBis,
+			int gesamtPreis) {
+		return BestellRepository.erstelleAngebot(kunde, produkte, gueltigAb,
+				gueltigBis, gesamtPreis);
 	}
-	
-	public Auftrag erstelleAuftrag(Angebot angebot,Date beauftragtAm) {
-		return BestellRepository.erstelleAuftrag(angebot, beauftragtAm);
+
+	public static Auftrag erstelleAuftrag(Angebot angebot, Date beauftragtAm) {
+		Auftrag auftrag = BestellRepository.erstelleAuftrag(angebot,
+				beauftragtAm);
+		BestellBusinessLogik.bearbeiteAuftrag(auftrag);
+		return auftrag;
 	}
-	
+
+	public static void auftragAbschliessen(Auftrag auftrag) {
+		if (auftrag != null) {
+			BestellBusinessLogik.auftragAbschliessen(auftrag);
+		}
+	}
+
+	public static void save(Auftrag auftrag) {
+		if (auftrag != null) {
+			BestellRepository.save(auftrag);
+		}
+	}
+
+	public static void save(Angebot angebot) {
+		if (angebot != null) {
+			BestellRepository.save(angebot);
+		}
+	}
 }

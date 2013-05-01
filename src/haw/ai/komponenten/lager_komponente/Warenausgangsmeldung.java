@@ -1,5 +1,7 @@
 package haw.ai.komponenten.lager_komponente;
 
+import haw.ai.komponenten.common.HESEntity;
+
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -9,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Warenausgangsmeldung {
+public class Warenausgangsmeldung extends HESEntity {
 
 	@Id
 	@GeneratedValue
@@ -20,11 +22,11 @@ public class Warenausgangsmeldung {
 	private int menge;
 	@ManyToOne
 	private Produkt produkt;
-	
+
 	protected Warenausgangsmeldung() {
 	}
-	
-	protected Warenausgangsmeldung(Produkt produkt,Date datum, int menge) {
+
+	protected Warenausgangsmeldung(Produkt produkt, Date datum, int menge) {
 		this.produkt = produkt;
 		this.datum = datum;
 		this.menge = menge;
@@ -51,7 +53,22 @@ public class Warenausgangsmeldung {
 	}
 
 	public void setProdukt(Produkt produkt) {
-		this.produkt = produkt;
+		if (produkt != null) {
+			if (this.produkt == null
+					|| (this.produkt != null && (this.produkt.getId() != produkt
+							.getId()))) {
+				this.produkt = produkt;
+				produkt.addWarenausgangsmeldung(this);
+			}
+		}
 	}
-	
+
+	public int getId() {
+		return this.id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 }

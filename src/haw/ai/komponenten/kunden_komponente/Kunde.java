@@ -3,6 +3,7 @@ package haw.ai.komponenten.kunden_komponente;
 import java.util.HashSet;
 import java.util.Set;
 import haw.ai.komponenten.bestell_komponente.*;
+import haw.ai.komponenten.common.HESEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Kunde {
+public class Kunde extends HESEntity {
 
 	@Id
 	@GeneratedValue
@@ -59,15 +60,8 @@ public class Kunde {
 		return angebote;
 	}
 
-	// evtl noch nicht fertig
 	public void setAngebote(Set<Angebot> angebote) {
-		Set<Angebot> angebote_neu = new HashSet<Angebot>();
-		for (Angebot angebot : angebote) {
-			if (!this.angebote.contains(angebot)) {
-				angebote_neu.add(angebot);
-			}
-		}		
-		if (!angebote_neu.isEmpty()) {
+		if (angebote != null) {
 			this.angebote = angebote;
 			for (Angebot angebot : angebote) {
 				angebot.setKunde(this);
@@ -76,7 +70,13 @@ public class Kunde {
 	}
 
 	public void addAngebot(Angebot angebot) {
-		this.angebote.add(angebot);
+		if (angebot != null) {
+			if (this.angebote == null) {
+				this.angebote = new HashSet<Angebot>();
+			}
+			this.angebote.add(angebot);
+			angebot.setKunde(this);
+		}
 	}
 
 }
