@@ -34,7 +34,7 @@ public class Rechnung extends HESEntity {
 	protected Rechnung(Date rechnungsDatum, boolean istBezahlt, Auftrag auftrag) {
 		this.rechnungsDatum = rechnungsDatum;
 		this.istBezahlt = istBezahlt;
-		this.auftrag = auftrag;
+		this.setAuftrag(auftrag);
 	}
 
 	public int getId() {
@@ -76,11 +76,12 @@ public class Rechnung extends HESEntity {
 		}
 	}
 
-	// public void removeAuftrag(Auftrag auftrag) {
-	// if (auftrag != null) {
-	//
-	// }
-	// }
+	public void removeAuftrag() {
+		if (this.auftrag != null) {
+			this.auftrag.removeRechnung();
+			this.auftrag = null;
+		}
+	}
 
 	public Set<Zahlungseingang> getZahlungseingaenge() {
 		return zahlungseingaenge;
@@ -112,6 +113,26 @@ public class Rechnung extends HESEntity {
 			}
 			this.zahlungseingaenge.add(zahlungseingang);
 			zahlungseingang.setRechnung(this);
+		}
+	}
+
+	public void removeZahlungseingang(Zahlungseingang zahlungseingang) {
+		if (zahlungseingang != null) {
+			if (this.zahlungseingaenge != null) {
+				if (this.zahlungseingaenge.contains(zahlungseingang)) {
+					zahlungseingaenge.remove(zahlungseingang);
+					zahlungseingang.removeRechnung();
+				}
+			}
+		}
+	}
+
+	public void removeAllZahlungseingaenge() {
+		if (this.zahlungseingaenge != null) {
+			for (Zahlungseingang ze : zahlungseingaenge) {
+				ze.removeRechnung();
+			}
+			zahlungseingaenge.clear();
 		}
 	}
 

@@ -3,10 +3,17 @@ package haw.ai.komponenten.common;
 public abstract class HESEntity {
 	public abstract int getId();
 
-	public boolean equals(HESEntity otherEntity) {
-		if (!(otherEntity instanceof HESEntity)) {
-			return false;
+	@Override
+	public boolean equals(Object otherEntity) {
+		boolean result = false;
+		if (otherEntity != null && otherEntity instanceof HESEntity) {
+			result = this.getId() == ((HESEntity) otherEntity).getId();
 		}
-		return this.getId() == otherEntity.getId();
+		return result;
 	}
+
+//	@Override
+//	public int hashCode() {
+//		return ((Integer) getId()).hashCode();
+//	}
 }

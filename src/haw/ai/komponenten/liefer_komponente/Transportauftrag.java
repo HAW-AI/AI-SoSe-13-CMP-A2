@@ -33,7 +33,7 @@ public class Transportauftrag extends HESEntity {
 	protected Transportauftrag(Lieferung lieferung, Date ausgangsDatum,
 			boolean lieferungErfolgt, Date lieferDatum,
 			String transportDienstleister) {
-		this.lieferung = lieferung;
+		this.setLieferung(lieferung);
 		this.ausgangsDatum = ausgangsDatum;
 		this.lieferungErfolgt = lieferungErfolgt;
 		this.lieferDatum = lieferDatum;
@@ -96,6 +96,13 @@ public class Transportauftrag extends HESEntity {
 				this.lieferung = lieferung;
 				lieferung.setTransportauftrag(this);
 			}
+		}
+	}
+
+	public void removeLieferung() {
+		if (this.lieferung != null) {
+			this.lieferung.removeTransportauftrag();
+			this.lieferung = null;
 		}
 	}
 

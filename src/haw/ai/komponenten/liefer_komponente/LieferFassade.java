@@ -3,14 +3,13 @@ package haw.ai.komponenten.liefer_komponente;
 import java.util.Date;
 
 import haw.ai.komponenten.bestell_komponente.Auftrag;
-import haw.ai.komponenten.rechnungs_komponente.Rechnung;
-import haw.ai.komponenten.rechnungs_komponente.RechnungsRepository;
 
 public class LieferFassade {
 
 	public static Lieferung erstelleLieferung(Auftrag auftrag) {
 		return LieferRepository.erstelleLieferung(auftrag);
 	}
+
 
 	public static Transportauftrag erstelleTransportauftrag(
 			Lieferung lieferung, Date ausgangsDatum, boolean lieferungErfolgt,
@@ -20,6 +19,10 @@ public class LieferFassade {
 				transportDienstleister);
 	}
 
+	/** Transportauftrag wird vom Transportdienstleister als erfolgt markiert 
+	 * 
+	 * @param transportAuftrag
+	 */
 	public static void markiereTransportErfolgt(
 			Transportauftrag transportAuftrag) {
 		if (transportAuftrag != null) {

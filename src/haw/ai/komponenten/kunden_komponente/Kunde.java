@@ -79,4 +79,24 @@ public class Kunde extends HESEntity {
 		}
 	}
 
+	public void removeAngebot(Angebot angebot) {
+		if (angebot != null) {
+			if (this.angebote != null) {
+				if (this.angebote.contains(angebot)) {
+					this.angebote.remove(angebot);
+					angebot.removeKunde();
+				}
+			}
+		}
+	}
+
+	public void removeAllAngebote() {
+		if (this.angebote != null) {
+			for (Angebot a : angebote) {
+				a.removeKunde();
+			}
+			this.angebote.clear();
+		}
+	}
+
 }

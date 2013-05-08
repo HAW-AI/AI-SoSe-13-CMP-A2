@@ -27,7 +27,7 @@ public class Zahlungseingang extends HESEntity {
 	}
 
 	protected Zahlungseingang(Rechnung rechnung, Date eingangsDatum, int betrag) {
-		this.rechnung = rechnung;
+		this.setRechnung(rechnung);
 		this.eingangsDatum = eingangsDatum;
 		this.betrag = betrag;
 	}
@@ -68,6 +68,13 @@ public class Zahlungseingang extends HESEntity {
 				this.rechnung = rechnung;
 				rechnung.addZahlungseingang(this);
 			}
+		}
+	}
+
+	public void removeRechnung() {
+		if (this.rechnung != null) {
+			this.rechnung.removeZahlungseingang(this);
+			this.rechnung = null;
 		}
 	}
 

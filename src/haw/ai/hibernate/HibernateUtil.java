@@ -7,6 +7,7 @@ import org.hibernate.tool.hbm2ddl.SchemaExport;
 
 public class HibernateUtil {
 	private static final SessionFactory sessionFactory = buildSessionFactory();
+	private static Session session;
 
 	@SuppressWarnings("deprecation")
 	private static SessionFactory buildSessionFactory() {
@@ -25,7 +26,4 @@ public class HibernateUtil {
 		return sessionFactory;
 	}
 
-	public static Session getSession() {
-		return getSessionFactory().openSession();
-	}
 }

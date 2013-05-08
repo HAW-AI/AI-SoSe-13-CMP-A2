@@ -45,9 +45,11 @@ public class BestellBusinessLogik implements KomponentenBusinessLogik {
 	public static void auftragAbschliessen(Auftrag auftrag) {
 		RechnungsFassade.rechnungBezahltWennZahlungAusreichend(auftrag
 				.getRechnung());
-		auftrag.setAuftragAbgeschlossen();
+		if (auftrag.getRechnung().isIstBezahlt()) {
+			auftrag.setAuftragAbgeschlossen();
+			BestellRepository.save(auftrag);
+		}
 		RechnungsFassade.save(auftrag.getRechnung());
-		BestellRepository.save(auftrag);
 	}
 
 }

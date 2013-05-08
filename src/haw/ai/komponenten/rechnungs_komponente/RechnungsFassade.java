@@ -18,6 +18,16 @@ public class RechnungsFassade implements KomponentenFassade {
 				eingangsDatum, betrag);
 	}
 
+	/**
+	 * Rechnung wird vom Buchhalter nur dann als bezahlt markiert, wenn sie
+	 * bezahlt ist (Summe aller Zahlungseing�nge fuer diese Rechnung entspricht
+	 * dem Rechnungsbetrag). Ist sie nicht bezahlt, passiert nichts (Rechnung
+	 * wird nicht als bezahlt markiert). Wichtig: Die Methode wird nie direkt
+	 * aufgerufen, der Methodenaufruf ist bereits in der Methode
+	 * "auftragAbschliessen" in der Bestellfassade integriert!
+	 * 
+	 * @param rechnung
+	 */
 	public static void rechnungBezahltWennZahlungAusreichend(Rechnung rechnung) {
 		RechnungsBusinessLogik.rechnungBezahltWennZahlungAusreichend(rechnung);
 	}

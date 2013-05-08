@@ -1,20 +1,15 @@
 package haw.ai.komponenten.liefer_komponente;
 
-import java.util.Date;
-
-import org.hibernate.Session;
-import haw.ai.hibernate.HibernateUtil;
 import haw.ai.komponenten.bestell_komponente.Auftrag;
-import haw.ai.komponenten.kunden_komponente.Kunde;
+import haw.ai.komponenten.persistenz.PersistenzService;
+
+import java.util.Date;
 
 public class LieferRepository {
 
 	public static Lieferung erstelleLieferung(Auftrag auftrag) {
 		Lieferung lieferung = new Lieferung(auftrag);
-		Session session = HibernateUtil.getSession();
-		session.beginTransaction();
-		session.save(lieferung);
-		session.getTransaction().commit();
+		save(lieferung);
 		return lieferung;
 	}
 
@@ -24,28 +19,19 @@ public class LieferRepository {
 		Transportauftrag transportauftrag = new Transportauftrag(lieferung,
 				ausgangsDatum, lieferungErfolgt, lieferDatum,
 				transportDienstleister);
-		Session session = HibernateUtil.getSession();
-		session.beginTransaction();
-		session.save(transportauftrag);
-		session.getTransaction().commit();
+		save(transportauftrag);
 		return transportauftrag;
 	}
 
 	public static void save(Lieferung lieferung) {
 		if (lieferung != null) {
-			Session session = HibernateUtil.getSession();
-			session.beginTransaction();
-			session.save(lieferung);
-			session.getTransaction().commit();
+			PersistenzService.saveEntity(lieferung);
 		}
 	}
 
 	public static void save(Transportauftrag transportauftrag) {
 		if (transportauftrag != null) {
-			Session session = HibernateUtil.getSession();
-			session.beginTransaction();
-			session.save(transportauftrag);
-			session.getTransaction().commit();
+			PersistenzService.saveEntity(transportauftrag);
 		}
 	}
 

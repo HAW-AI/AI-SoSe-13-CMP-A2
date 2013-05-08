@@ -27,7 +27,7 @@ public class Warenausgangsmeldung extends HESEntity {
 	}
 
 	protected Warenausgangsmeldung(Produkt produkt, Date datum, int menge) {
-		this.produkt = produkt;
+		this.setProdukt(produkt);
 		this.datum = datum;
 		this.menge = menge;
 	}
@@ -69,6 +69,13 @@ public class Warenausgangsmeldung extends HESEntity {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public void removeProdukt() {
+		if (produkt != null) {
+			this.produkt.removeWarenausgangsmeldung(this);
+			this.produkt = null;
+		}
 	}
 
 }

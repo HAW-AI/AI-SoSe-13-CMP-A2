@@ -1,30 +1,34 @@
 package haw.ai.komponenten.kunden_komponente;
 
+import haw.ai.komponenten.persistenz.PersistenzService;
+
+import java.util.List;
+
 import org.hibernate.Session;
 
-import haw.ai.hibernate.HibernateUtil;
-import haw.ai.komponenten.bestell_komponente.Auftrag;
-
 public class KundenRepository {
+	
 	public static Kunde findeKunden(String name) {
-		return null;
+		Session session = PersistenzService.getSession();
+		List<Kunde> kunden = session
+				.createQuery("FROM Kunde kunde WHERE kunde.name = :name")
+				.setParameter("name", name).list();
+		Kunde kunde = null;
+		if (!kunden.isEmpty()) {
+			kunde = kunden.get(0);
+		}
+		return kunde;
 	}
 
 	public static Kunde erstelleKunde(String name, String adresse) {
 		Kunde kunde = new Kunde(name, adresse);
-		Session session = HibernateUtil.getSession();
-		session.beginTransaction();
-		session.save(kunde);
-		session.getTransaction().commit();
+		save(kunde);
 		return kunde;
 	}
 
 	public static void save(Kunde kunde) {
 		if (kunde != null) {
-			Session session = HibernateUtil.getSession();
-			session.beginTransaction();
-			session.save(kunde);
-			session.getTransaction().commit();
+			PersistenzService.saveEntity(kunde);
 		}
 	}
 

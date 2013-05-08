@@ -22,6 +22,14 @@ public class BestellFassade {
 		return auftrag;
 	}
 
+	/**
+	 * Auftrag wird vom Buchhalter als abgeschlossen markiert: Erst wird
+	 * geprueft, ob Rechnung bezahlt wurde. Wenn ja, wird die Rechnung als
+	 * bezahlt markiert. Dann wird geprueft, ob Rechnung als bezahlt markiert
+	 * wurde. Wenn ja, wird der Auftrag als abgeschlossen markiert. Ist die
+	 * Rechnung nicht bezahlt, passiert nichts (Auftrag wird nicht als
+	 * abgeschlossen markiert).
+	 */
 	public static void auftragAbschliessen(Auftrag auftrag) {
 		if (auftrag != null) {
 			BestellBusinessLogik.auftragAbschliessen(auftrag);

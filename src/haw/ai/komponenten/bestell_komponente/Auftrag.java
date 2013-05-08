@@ -80,6 +80,13 @@ public class Auftrag extends HESEntity {
 			}
 		}
 	}
+	
+	public void removeAngebot() {
+		if (this.angebot != null) {
+			this.angebot.removeAuftrag();
+			this.angebot = null;
+		}
+	}
 
 	public Lieferung getLieferung() {
 		return lieferung;
@@ -95,6 +102,13 @@ public class Auftrag extends HESEntity {
 			}
 		}
 	}
+	
+	public void removeLieferung() {
+		if (this.lieferung != null) {
+			this.lieferung.removeAuftrag();
+			this.lieferung = null;
+		}
+	}
 
 	public Rechnung getRechnung() {
 		return rechnung;
@@ -108,6 +122,13 @@ public class Auftrag extends HESEntity {
 				this.rechnung = rechnung;
 				rechnung.setAuftrag(this);
 			}
+		}
+	}
+	
+	public void removeRechnung() {
+		if (this.rechnung != null) {
+			this.rechnung.removeAuftrag();
+			this.rechnung = null;
 		}
 	}
 

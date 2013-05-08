@@ -29,33 +29,33 @@ public class Main {
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		session = sessionFactory.openSession();
 
-		Kunde kunde = KundenFassade.erstelleKunden("John Doe",
-				"Example Street 5");
-		System.out.println("Neuer Kunde: " + kunde.getId() + "\n");
-
-		Produkt produkt1 = LagerFassade.erstelleProdukt("Toaster", 5);
-		Produkt produkt2 = LagerFassade.erstelleProdukt("Mixer", 15);
-		Produkt produkt3 = LagerFassade.erstelleProdukt("Staubsauger", 10);
-
-		Map<Produkt, Integer> produkte = new HashMap<Produkt, Integer>();
-		produkte.put(produkt1, 1);
-		produkte.put(produkt3, 2);
-
-		Angebot angebot = BestellFassade.erstelleAngebot(kunde, produkte,
-				DateUtil.now(), DateUtil.daysFromNow(30), 50);
-
-		Auftrag auftrag = BestellFassade.erstelleAuftrag(angebot,
-				DateUtil.now());
-
-		LieferFassade.markiereTransportErfolgt(auftrag.getLieferung()
-				.getTransportauftrag());
-
-		RechnungsFassade.erstelleZahlungseingang(auftrag.getRechnung(),
-				DateUtil.now(), 40);
-		RechnungsFassade.erstelleZahlungseingang(auftrag.getRechnung(),
-				DateUtil.now(), 10);
-
-		BestellFassade.auftragAbschliessen(auftrag);
+//		Kunde kunde = KundenFassade.erstelleKunden("John Doe",
+//				"Example Street 5");
+//		System.out.println("Neuer Kunde: " + kunde.getId() + "\n");
+//
+//		Produkt produkt1 = LagerFassade.erstelleProdukt("Toaster", 5);
+//		Produkt produkt2 = LagerFassade.erstelleProdukt("Mixer", 15);
+//		Produkt produkt3 = LagerFassade.erstelleProdukt("Staubsauger", 10);
+//
+//		Map<Produkt, Integer> produkte = new HashMap<Produkt, Integer>();
+//		produkte.put(produkt1, 1);
+//		produkte.put(produkt3, 2);
+//
+//		Angebot angebot = BestellFassade.erstelleAngebot(kunde, produkte,
+//				DateUtil.now(), DateUtil.daysFromNow(30), 50);
+//
+//		Auftrag auftrag = BestellFassade.erstelleAuftrag(angebot,
+//				DateUtil.now());
+//
+//		LieferFassade.markiereTransportErfolgt(auftrag.getLieferung()
+//				.getTransportauftrag());
+//
+//		RechnungsFassade.erstelleZahlungseingang(auftrag.getRechnung(),
+//				DateUtil.now(), 40);
+//		RechnungsFassade.erstelleZahlungseingang(auftrag.getRechnung(),
+//				DateUtil.now(), 10);
+//
+//		BestellFassade.auftragAbschliessen(auftrag);
 
 		session.close();
 	}

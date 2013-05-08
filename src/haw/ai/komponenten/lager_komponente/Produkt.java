@@ -102,4 +102,40 @@ public class Produkt extends HESEntity {
 	public void setLagerbestand(int lagerbestand) {
 		this.lagerbestand = lagerbestand;
 	}
+
+	public void removeAngebot(Angebot angebot) {
+		if (angebot != null) {
+			if (this.angebote == null) {
+				this.angebote = new HashSet<Angebot>();
+			}
+			if (angebote.contains(angebot)) {
+				angebote.remove(angebot);
+				angebot.removeProdukt(this);
+			}
+
+		}
+	}
+
+	public void removeWarenausgangsmeldung(
+			Warenausgangsmeldung warenausgangsmeldung) {
+		if (warenausgangsmeldung != null) {
+			if (this.warenausgangsmeldungen == null) {
+				this.warenausgangsmeldungen = new HashSet<Warenausgangsmeldung>();
+			}
+			if (warenausgangsmeldungen.contains(warenausgangsmeldung)) {
+				warenausgangsmeldungen.remove(warenausgangsmeldung);
+				warenausgangsmeldung.removeProdukt();
+			}
+		}
+	}
+	
+	public void removeAllWarenausgangsmeldungen() {
+		if (this.warenausgangsmeldungen != null) {
+			for (Warenausgangsmeldung w : warenausgangsmeldungen) {
+				w.removeProdukt();
+			}
+			this.warenausgangsmeldungen.clear();
+		}
+	}
+	
 }

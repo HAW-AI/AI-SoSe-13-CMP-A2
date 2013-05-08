@@ -103,6 +103,13 @@ public class Angebot extends HESEntity {
 			}
 		}
 	}
+	
+	public void removeKunde() {
+		if (this.kunde != null) {
+			this.kunde.removeAngebot(this);
+			this.kunde = null;
+		}
+	}
 
 	public Auftrag getAuftrag() {
 		return auftrag;
@@ -119,6 +126,13 @@ public class Angebot extends HESEntity {
 		}
 	}
 
+	public void removeAuftrag() {
+		if (this.auftrag != null) {
+			this.auftrag.removeAngebot();
+			this.auftrag = null;
+		}
+	}
+	
 	public Map<Produkt, Integer> getProdukte() {
 		return produkte;
 	}
@@ -141,19 +155,33 @@ public class Angebot extends HESEntity {
 				this.produkte.put(produkt, menge);
 				produkt.addAngebot(this);
 			}
+			if (this.produkte.containsKey(produkt)) {
+				this.produkte.put(produkt, this.produkte.get(produkt) + menge);
+			}
 		}
 	}
 
-	// public void removeProdukt(Produkt produkt) {
-	// if (produkt != null) {
-	// if (this.produkte == null) {
-	// this.produkte = new HashMap<Produkt, Integer>();
-	// }
-	// if (this.produkte.containsKey(produkt)) {
-	// this.produkte.remove(produkt);
-	// produkt.removeAngebot(this);
-	// }
-	// }
-	// }
+	public void removeProdukt(Produkt produkt) {
+		if (produkt != null) {
+			if (this.produkte == null) {
+				this.produkte = new HashMap<Produkt, Integer>();
+			}
+			if (this.produkte.containsKey(produkt)) {
+				this.produkte.remove(produkt);
+				produkt.removeAngebot(this);
+			}
+		}
+	}
+	
+	public void removeAllProdukte() {
+		if (this.produkte != null) {
+			for (Produkt p : produkte.keySet()) {
+				p.removeAngebot(this);
+			}
+			this.produkte.clear();
+		}
+	}
+	
+	
 
 }

@@ -48,6 +48,13 @@ public class Lieferung extends HESEntity {
 			}
 		}
 	}
+	
+	public void removeTransportauftrag() {
+		if (this.transportauftrag != null) {
+			this.transportauftrag.removeLieferung();
+			this.transportauftrag = null;
+		}
+	}
 
 	public Auftrag getAuftrag() {
 		return auftrag;
@@ -61,6 +68,13 @@ public class Lieferung extends HESEntity {
 				this.auftrag = auftrag;
 				auftrag.setLieferung(this);
 			}
+		}
+	}
+
+	public void removeAuftrag() {
+		if (this.auftrag != null) {
+			this.auftrag.removeLieferung();
+			this.auftrag = null;
 		}
 	}
 }
