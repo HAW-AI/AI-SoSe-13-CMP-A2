@@ -7,10 +7,11 @@ import haw.ai.komponenten.bestell_komponente.Auftrag;
 import haw.ai.komponenten.bestell_komponente.BestellFassade;
 import haw.ai.komponenten.common.DateUtil;
 import haw.ai.komponenten.kunden_komponente.Kunde;
-import haw.ai.komponenten.kunden_komponente.KundenFassade;
+import haw.ai.komponenten.kunden_komponente.KundenFassadeImpl;
 import haw.ai.komponenten.lager_komponente.LagerFassade;
 import haw.ai.komponenten.lager_komponente.Produkt;
 import haw.ai.komponenten.liefer_komponente.LieferFassade;
+import haw.ai.komponenten.persistenz.PersistenzService;
 import haw.ai.komponenten.rechnungs_komponente.RechnungsFassade;
 
 import java.util.HashMap;
@@ -24,14 +25,11 @@ public class Szenario {
 
 	@Test
 	public void szenarioTest() {
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session session = HibernateUtil.getSession();
-
-		Kunde kunde = KundenFassade.erstelleKunden("John Doe",
+		Kunde kunde = KundenFassadeImpl.erstelleKunden("John Doe",
 				"Example Street 5");
 		System.out.println("Neuer Kunde: " + kunde.getId() + "\n");
-		System.out.println("Gefundener Kunde: " + KundenFassade.findeKunden("John Doe").getId() + "\n");
-		assertEquals(kunde, KundenFassade.findeKunden("John Doe"));
+		System.out.println("Gefundener Kunde: " + KundenFassadeImpl.findeKunden("John Doe").getId() + "\n");
+		assertEquals(kunde, KundenFassadeImpl.findeKunden("John Doe"));
 
 		Produkt produkt1 = LagerFassade.erstelleProdukt("Toaster", 5);
 		Produkt produkt2 = LagerFassade.erstelleProdukt("Mixer", 15);
@@ -47,7 +45,7 @@ public class Szenario {
 				DateUtil.now(), DateUtil.daysFromNow(30), 50);
 		assertTrue(kunde.getAngebote().contains(angebot));
 		
-		assertTrue(KundenFassade.findeKunden("John Doe").getAngebote().contains(angebot));
+		assertTrue(KundenFassadeImpl.findeKunden("John Doe").getAngebote().contains(angebot));
 
 		Auftrag auftrag = BestellFassade.erstelleAuftrag(angebot,
 				DateUtil.now());
@@ -68,7 +66,7 @@ public class Szenario {
 		BestellFassade.auftragAbschliessen(auftrag);
 		assertTrue(auftrag.isIstAbgeschlossen());
 
-		HibernateUtil.closeSession();
+		PersistenzService.closeSession();
 	}
 
 }

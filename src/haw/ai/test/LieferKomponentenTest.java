@@ -7,12 +7,13 @@ import haw.ai.komponenten.bestell_komponente.Auftrag;
 import haw.ai.komponenten.bestell_komponente.BestellFassade;
 import haw.ai.komponenten.common.DateUtil;
 import haw.ai.komponenten.kunden_komponente.Kunde;
-import haw.ai.komponenten.kunden_komponente.KundenFassade;
+import haw.ai.komponenten.kunden_komponente.KundenFassadeImpl;
 import haw.ai.komponenten.lager_komponente.LagerFassade;
 import haw.ai.komponenten.lager_komponente.Produkt;
 import haw.ai.komponenten.liefer_komponente.LieferFassade;
 import haw.ai.komponenten.liefer_komponente.Lieferung;
 import haw.ai.komponenten.liefer_komponente.Transportauftrag;
+import haw.ai.komponenten.persistenz.PersistenzService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +24,7 @@ public class LieferKomponentenTest {
 
 	@Test
 	public void test() {
-		Kunde kunde = KundenFassade.erstelleKunden("John Dover",
+		Kunde kunde = KundenFassadeImpl.erstelleKunden("John Dover",
 				"Example Street 5");
 		Produkt produkt1 = LagerFassade.erstelleProdukt("ToasterOven", 5);
 		Map<Produkt, Integer> produkte = new HashMap<Produkt, Integer>();
@@ -48,7 +49,7 @@ public class LieferKomponentenTest {
 		LieferFassade.markiereTransportErfolgt(transportauftrag);
 		assertTrue(transportauftrag.isLieferungErfolgt());
 
-		HibernateUtil.closeSession();
+		PersistenzService.closeSession();
 	}
 
 }

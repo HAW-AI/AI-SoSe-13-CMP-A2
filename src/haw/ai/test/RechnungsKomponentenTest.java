@@ -7,9 +7,10 @@ import haw.ai.komponenten.bestell_komponente.Auftrag;
 import haw.ai.komponenten.bestell_komponente.BestellFassade;
 import haw.ai.komponenten.common.DateUtil;
 import haw.ai.komponenten.kunden_komponente.Kunde;
-import haw.ai.komponenten.kunden_komponente.KundenFassade;
+import haw.ai.komponenten.kunden_komponente.KundenFassadeImpl;
 import haw.ai.komponenten.lager_komponente.LagerFassade;
 import haw.ai.komponenten.lager_komponente.Produkt;
+import haw.ai.komponenten.persistenz.PersistenzService;
 import haw.ai.komponenten.rechnungs_komponente.Rechnung;
 import haw.ai.komponenten.rechnungs_komponente.RechnungsFassade;
 import haw.ai.komponenten.rechnungs_komponente.Zahlungseingang;
@@ -23,7 +24,7 @@ public class RechnungsKomponentenTest {
 
 	@Test
 	public void test() {
-		Kunde kunde = KundenFassade.erstelleKunden("Jeremy CLarkson",
+		Kunde kunde = KundenFassadeImpl.erstelleKunden("Jeremy CLarkson",
 				"Example Street 51");
 		Produkt produkt1 = LagerFassade.erstelleProdukt("Motorbike", 5);
 		Map<Produkt, Integer> produkte = new HashMap<Produkt, Integer>();
@@ -52,7 +53,7 @@ public class RechnungsKomponentenTest {
 		RechnungsFassade.rechnungBezahltWennZahlungAusreichend(rechnung);
 		assertTrue(rechnung.isIstBezahlt());
 		
-		HibernateUtil.closeSession();
+		PersistenzService.closeSession();
 	}
 
 }

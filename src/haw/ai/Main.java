@@ -9,7 +9,7 @@ import haw.ai.komponenten.bestell_komponente.Auftrag;
 import haw.ai.komponenten.bestell_komponente.BestellFassade;
 import haw.ai.komponenten.common.DateUtil;
 import haw.ai.komponenten.kunden_komponente.Kunde;
-import haw.ai.komponenten.kunden_komponente.KundenFassade;
+import haw.ai.komponenten.kunden_komponente.KundenFassadeImpl;
 import haw.ai.komponenten.lager_komponente.LagerFassade;
 import haw.ai.komponenten.lager_komponente.Produkt;
 import haw.ai.komponenten.liefer_komponente.LieferFassade;

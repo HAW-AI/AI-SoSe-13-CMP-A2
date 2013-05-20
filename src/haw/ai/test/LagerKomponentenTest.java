@@ -6,6 +6,7 @@ import haw.ai.komponenten.common.DateUtil;
 import haw.ai.komponenten.lager_komponente.LagerFassade;
 import haw.ai.komponenten.lager_komponente.Produkt;
 import haw.ai.komponenten.lager_komponente.Warenausgangsmeldung;
+import haw.ai.komponenten.persistenz.PersistenzService;
 
 import org.junit.Test;
 
@@ -34,6 +35,6 @@ public class LagerKomponentenTest {
 		assertEquals(produkt1, wa1.getProdukt());
 		assertNotNull(wa2.getProdukt());
 
-		HibernateUtil.closeSession();
+		PersistenzService.closeSession();
 	}
 }

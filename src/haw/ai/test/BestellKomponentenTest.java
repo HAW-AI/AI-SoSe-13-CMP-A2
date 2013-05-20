@@ -11,9 +11,10 @@ import haw.ai.komponenten.bestell_komponente.Auftrag;
 import haw.ai.komponenten.bestell_komponente.BestellFassade;
 import haw.ai.komponenten.common.DateUtil;
 import haw.ai.komponenten.kunden_komponente.Kunde;
-import haw.ai.komponenten.kunden_komponente.KundenFassade;
+import haw.ai.komponenten.kunden_komponente.KundenFassadeImpl;
 import haw.ai.komponenten.lager_komponente.LagerFassade;
 import haw.ai.komponenten.lager_komponente.Produkt;
+import haw.ai.komponenten.persistenz.PersistenzService;
 
 import org.junit.Test;
 
@@ -21,7 +22,7 @@ public class BestellKomponentenTest {
 
 	@Test
 	public void test() {
-		Kunde kunde = KundenFassade.erstelleKunden("Maria Meier",
+		Kunde kunde = KundenFassadeImpl.erstelleKunden("Maria Meier",
 				"Auf der Wiese 1");
 		
 		Produkt produkt1 = LagerFassade.erstelleProdukt("Fernseher", 500);
@@ -37,7 +38,7 @@ public class BestellKomponentenTest {
 		assertNotNull(angebot.getId());
 		assertTrue(kunde.getAngebote().contains(angebot));
 		
-		assertTrue(KundenFassade.findeKunden("Maria Meier").getAngebote().contains(angebot));
+		assertTrue(KundenFassadeImpl.findeKunden("Maria Meier").getAngebote().contains(angebot));
 
 		Auftrag auftrag = BestellFassade.erstelleAuftrag(angebot,
 				DateUtil.now());
@@ -50,7 +51,7 @@ public class BestellKomponentenTest {
 		BestellFassade.auftragAbschliessen(auftrag);
 		assertEquals(true, auftrag.isIstAbgeschlossen());
 		
-		HibernateUtil.closeSession();
+		PersistenzService.closeSession();
 	}
 
 }
