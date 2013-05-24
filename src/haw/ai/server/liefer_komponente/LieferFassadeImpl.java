@@ -1,22 +1,19 @@
 package haw.ai.server.liefer_komponente;
 
+import haw.ai.server.HESServerImpl;
 import haw.ai.server.bestell_komponente.Auftrag;
 
 import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Date;
 
 public class LieferFassadeImpl extends UnicastRemoteObject implements LieferFassade {
 	
 	private static final long serialVersionUID = -691970946398847320L;
-	private String instanceName;
-	private Registry registry;
-	public final static String bindFassadenName = LieferFassade.class.getName();
+	private HESServerImpl hesServer;
 	
-	private LieferFassadeImpl(Registry registry, String instanceName) throws RemoteException {
-		this.instanceName = instanceName;
-		this.registry = registry;
+	private LieferFassadeImpl(HESServerImpl hesServer) throws RemoteException {
+		this.hesServer = hesServer;
 	}
 
 	public Lieferung erstelleLieferung(Auftrag auftrag) {
@@ -47,15 +44,9 @@ public class LieferFassadeImpl extends UnicastRemoteObject implements LieferFass
 		LieferRepository.save(transportauftrag);
 	}
 	
-	public static LieferFassade createLieferFassade(Registry registry, String instanceName) throws RemoteException {
-		LieferFassade lieferFassade = new LieferFassadeImpl(registry, instanceName);
-		registry.rebind(lieferFassade.bindName(), lieferFassade);
+	public static LieferFassade createLieferFassade(HESServerImpl hesServer) throws RemoteException {
+		LieferFassade lieferFassade = new LieferFassadeImpl(hesServer);
+		hesServer.getServerRegistry().rebind(LieferFassade.class.getSimpleName(), lieferFassade);
 		return lieferFassade;
 	}
-
-	@Override
-	public String bindName() {
-		return instanceName + " - " + bindFassadenName;
-	}
-
 }

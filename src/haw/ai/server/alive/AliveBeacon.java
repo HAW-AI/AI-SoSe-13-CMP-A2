@@ -1,27 +1,25 @@
 package haw.ai.server.alive;
 
 import haw.ai.client.HESHealthMonitor;
+import haw.ai.server.HESServerImpl;
 
 import java.rmi.AccessException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
 
 public class AliveBeacon extends Thread {
+	private HESServerImpl server;
+	private static final Integer BROADCAST_EVERY_N_MILLISECONDS = 2000;
 
-	private String hesInstanceUUID;
-	private Registry registry;
-
-	public AliveBeacon(Registry registry, String hesInstanceUUID) {
-		this.hesInstanceUUID = hesInstanceUUID;
-		this.registry = registry;
+	public AliveBeacon(HESServerImpl server) {
+		this.server = server;
 	}
 
 	public void run() {
 		try {
 			while (!interrupted()) {
-				((HESHealthMonitor) registry.lookup(HESHealthMonitor.class.getName())).iAmAlive(hesInstanceUUID);
-				sleep(2000);
+				((HESHealthMonitor) server.getClientRegistry().lookup(HESHealthMonitor.class.getName())).iAmAlive(server.getInstanceName(), server.getServerRegistryHostname(), server.getServerRegistryPort());
+				sleep(BROADCAST_EVERY_N_MILLISECONDS);
 			}
 		} catch (NotBoundException e) {
 		} catch (InterruptedException e) {

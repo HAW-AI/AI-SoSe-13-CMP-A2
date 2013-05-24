@@ -16,9 +16,12 @@ package haw.ai.client.gui.dashboard;
  */
 public class Dashboard_GUI extends javax.swing.JFrame {
 
+	private Dashboard dashboard;
+	
 	/** Creates new form Dashboard_GUI */
-	public Dashboard_GUI() {
+	public Dashboard_GUI(Dashboard dashboard) {
 		initComponents();
+		this.dashboard = dashboard;
 		initialize();
 	}
 
@@ -167,21 +170,25 @@ public class Dashboard_GUI extends javax.swing.JFrame {
 	public void setProcessState(String instanzname, boolean state) {
 		ProcessListModel model = (ProcessListModel) processList.getModel();
 
-		HES_Instanz instanz_in_liste;
+		HESInstanceState instanz_in_liste;
+		boolean neue_instanz = true;
+		
 		for (int i = 0; i < model.getSize(); i++) {
-			instanz_in_liste = (HES_Instanz) model.getElementAt(i);
+			instanz_in_liste = (HESInstanceState) model.getElementAt(i);
 			if (instanzname.equals(instanz_in_liste.getName())) {
 				instanz_in_liste.setState(state);
+				neue_instanz = false;
 			}
+		}
+		
+		if (neue_instanz) {
+			HESInstanceState instanz = new HESInstanceState(instanzname, state);
+			model.add(instanz);
 		}
 	}
 
 	private void newInstanceButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_newInstanceButtonActionPerformed
-		// test
-		ProcessListModel model = (ProcessListModel) processList.getModel();
-		HES_Instanz instanz = new HES_Instanz("HES", true);
-		model.add(instanz);
-		processList.setSelectedValue(instanz, rootPaneCheckingEnabled);
+		// TODO Button loeschen!
 	}// GEN-LAST:event_newInstanceButtonActionPerformed
 
 	private void processListValueChanged(
@@ -189,7 +196,7 @@ public class Dashboard_GUI extends javax.swing.JFrame {
 		if (!changeStateButton.isEnabled())
 			changeStateButton.setEnabled(true);
 
-		HES_Instanz instanz = (HES_Instanz) processList.getSelectedValue();
+		HESInstanceState instanz = (HESInstanceState) processList.getSelectedValue();
 		instanceNameLabel.setText(instanz.getName());
 		changeStateButton.setSelected(instanz.getState());
 		if (changeStateButton.isSelected())
@@ -199,17 +206,19 @@ public class Dashboard_GUI extends javax.swing.JFrame {
 	}// GEN-LAST:event_processListValueChanged
 
 	private void changeStateButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_changeStateButtonActionPerformed
-		HES_Instanz instanz = (HES_Instanz) processList.getSelectedValue();
+		HESInstanceState instanz = (HESInstanceState) processList.getSelectedValue();
 
 		if (changeStateButton.isSelected()) {
 			changeStateButton.setSelected(true);
 			changeStateButton.setText("ON");
 			instanz.setState(true);
+			this.dashboard.changeInstanceState(instanz.getName(), true);
 			processList.setSelectedValue(instanz, rootPaneCheckingEnabled);
 		} else {
 			changeStateButton.setSelected(false);
 			changeStateButton.setText("OFF");
 			instanz.setState(false);
+			this.dashboard.changeInstanceState(instanz.getName(), false);
 			processList.setSelectedValue(instanz, rootPaneCheckingEnabled);
 		}
 	}// GEN-LAST:event_changeStateButtonActionPerformed

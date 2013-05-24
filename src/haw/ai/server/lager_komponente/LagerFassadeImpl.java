@@ -1,5 +1,6 @@
 package haw.ai.server.lager_komponente;
 
+import haw.ai.server.HESServerImpl;
 import haw.ai.server.bestell_komponente.BestellFassade;
 import haw.ai.server.bestell_komponente.BestellFassadeImpl;
 
@@ -13,14 +14,10 @@ public class LagerFassadeImpl extends UnicastRemoteObject implements
 		LagerFassade {
 
 	private static final long serialVersionUID = 8714263161717928558L;
-	private String instanceName;
-	private Registry registry;
-	public final static String bindFassadenName = LagerFassade.class.getName();
+	private HESServerImpl hesServer;
 
-	private LagerFassadeImpl(Registry registry, String instanceName)
-			throws RemoteException {
-		this.instanceName = instanceName;
-		this.registry = registry;
+	private LagerFassadeImpl(HESServerImpl hesServer) throws RemoteException {
+		this.hesServer = hesServer;
 	}
 
 	public Produkt erstelleProdukt(String name, int lagerbestand) {
@@ -53,16 +50,10 @@ public class LagerFassadeImpl extends UnicastRemoteObject implements
 		return LagerRepository.findeProdukt(produktName);
 	}
 
-	public static LagerFassade createLagerFassade(Registry registry,
-			String instanceName) throws RemoteException {
-		LagerFassade lagerFassade = new LagerFassadeImpl(registry, instanceName);
-		registry.rebind(lagerFassade.bindName(), lagerFassade);
+	public static LagerFassade createLagerFassade(HESServerImpl hesServerImpl)
+			throws RemoteException {
+		LagerFassade lagerFassade = new LagerFassadeImpl(hesServerImpl);
+		hesServerImpl.getServerRegistry().rebind(LagerFassade.class.getSimpleName(), lagerFassade);
 		return lagerFassade;
 	}
-
-	@Override
-	public String bindName() {
-		return instanceName + " - " + bindFassadenName;
-	}
-
 }

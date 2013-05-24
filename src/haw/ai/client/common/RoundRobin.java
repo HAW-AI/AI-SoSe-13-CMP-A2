@@ -1,0 +1,26 @@
+//taken from http://stackoverflow.com/a/2041772/596666
+package haw.ai.client.common;
+
+import java.util.Iterator;
+import java.util.List;
+
+public class RoundRobin<T> implements Iterable<T> {
+  private List<T> coll;
+
+  public RoundRobin(List<T> coll) { this.coll = coll; }
+
+  public Iterator<T> iterator() { 
+     return new Iterator<T>() {
+
+        private int index = 0;
+
+        public T next() {
+           T res = coll.get(index);
+           index =  (index + 1) % coll.size();
+           return res;
+        }
+        public boolean hasNext() { return true; }
+        public void remove() { throw new UnsupportedOperationException(); }
+     };
+  }
+}

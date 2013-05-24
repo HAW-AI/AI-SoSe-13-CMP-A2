@@ -5,24 +5,18 @@ import haw.ai.server.kunden_komponente.Kunde;
 import haw.ai.server.lager_komponente.Produkt;
 
 import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Date;
 import java.util.Map;
 
 public class BestellFassadeImpl extends UnicastRemoteObject implements BestellFassade {
-
-	private static final long serialVersionUID = 1L;
-
-	public final static String bindFassadenName = BestellFassade.class.getName();
-
-	private String instanceName;
-	private Registry registry;
+	private static final long serialVersionUID = -851919772922635440L;
 	private HESServerImpl hesServer;
+	private BestellBusinessLogik bestellBusinessLogik;
 
-	private BestellFassadeImpl(Registry registry, String instanceName, HESServerImpl hesServer) throws RemoteException {
-		this.instanceName = instanceName;
-		this.registry = registry;
+	private BestellFassadeImpl(HESServerImpl hesServer) throws RemoteException {
+		this.hesServer = hesServer;
+		this.bestellBusinessLogik = new BestellBusinessLogik(hesServer);
 	}
 	
 	public Angebot erstelleAngebot(Kunde kunde,
@@ -35,13 +29,13 @@ public class BestellFassadeImpl extends UnicastRemoteObject implements BestellFa
 	public Auftrag erstelleAuftrag(Angebot angebot, Date beauftragtAm) {
 		Auftrag auftrag = BestellRepository.erstelleAuftrag(angebot,
 				beauftragtAm);
-		BestellBusinessLogik.bearbeiteAuftrag(auftrag);
+		this.bestellBusinessLogik.bearbeiteAuftrag(auftrag);
 		return auftrag;
 	}
 
 	public void auftragAbschliessen(Auftrag auftrag) {
 		if (auftrag != null) {
-			BestellBusinessLogik.auftragAbschliessen(auftrag);
+			this.bestellBusinessLogik.auftragAbschliessen(auftrag);
 		}
 	}
 
@@ -57,18 +51,9 @@ public class BestellFassadeImpl extends UnicastRemoteObject implements BestellFa
 		}
 	}
 	
-	public static BestellFassade createBestellFassade(Registry registry, HESServerImpl hesServer) throws RemoteException {
-		BestellFassade bestellFassade = new BestellFassadeImpl(registry, hesServer.getInstanceName());
-		registry.rebind(bestellFassade.bindName(), bestellFassade);
+	public static BestellFassade createBestellFassade(HESServerImpl hesServer) throws RemoteException {
+		BestellFassade bestellFassade = new BestellFassadeImpl(hesServer);
+		hesServer.getServerRegistry().rebind(BestellFassade.class.getSimpleName(), bestellFassade);
 		return bestellFassade;
 	}
-	
-	public String getInstanceName() {
-		return hesServer.getInstanceName();
-	}
-	
-	public String bindName() {
-		return instanceName + " - " + bindFassadenName;
-	}
-
 }

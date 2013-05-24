@@ -1,22 +1,18 @@
 package haw.ai.server.rechnungs_komponente;
 
+import haw.ai.server.HESServerImpl;
+import haw.ai.server.bestell_komponente.Auftrag;
+
 import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Date;
 
-import haw.ai.server.bestell_komponente.Auftrag;
-
 public class RechnungsFassadeImpl extends UnicastRemoteObject implements RechnungsFassade {
-	public final static String bindFassadenName = RechnungsFassade.class.getName();
+	private static final long serialVersionUID = -4094915660403030235L;
+	private HESServerImpl hesServer;
 
-	private static final long serialVersionUID = 1L;
-	private String instanceName;
-	private Registry registry;
-
-	private RechnungsFassadeImpl(Registry registry, String instanceName) throws RemoteException {
-		this.instanceName = instanceName;
-		this.registry = registry;
+	private RechnungsFassadeImpl(HESServerImpl hesServer) throws RemoteException {
+		this.hesServer = hesServer;
 	}
 	
 	public Rechnung erstelleRechnung(Date rechnungsDatum, Auftrag auftrag) {
@@ -42,14 +38,9 @@ public class RechnungsFassadeImpl extends UnicastRemoteObject implements Rechnun
 		RechnungsRepository.save(zahlungseingang);
 	}
 	
-	public static RechnungsFassade createRechnungsFassade(Registry registry, String instanceName) throws RemoteException {
-		RechnungsFassadeImpl rechnungsFassade = new RechnungsFassadeImpl(registry, instanceName);
-		registry.rebind(rechnungsFassade.bindName(), rechnungsFassade);
+	public static RechnungsFassade createRechnungsFassade(HESServerImpl hesServer) throws RemoteException {
+		RechnungsFassadeImpl rechnungsFassade = new RechnungsFassadeImpl(hesServer);
+		hesServer.getServerRegistry().rebind(RechnungsFassade.class.getSimpleName(), rechnungsFassade);
 		return rechnungsFassade;
 	}
-	
-	public String bindName() {
-		return instanceName + " - " + bindFassadenName;
-	}
-
 }

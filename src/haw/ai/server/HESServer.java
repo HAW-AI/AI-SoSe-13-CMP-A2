@@ -14,4 +14,5 @@ public interface HESServer extends Remote {
 	public LagerFassade getLagerFassade();
 	public LieferFassade getLieferFassade();
 	public RechnungsFassade getRechnungsFassade();
+	public String getInstanceName();
 }

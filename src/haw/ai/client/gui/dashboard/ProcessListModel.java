@@ -14,9 +14,9 @@ import javax.swing.AbstractListModel;
  */
 public class ProcessListModel extends AbstractListModel {
 
-    private static List<HES_Instanz> processlist = new ArrayList<HES_Instanz>();
+    private static List<HESInstanceState> processlist = new ArrayList<HESInstanceState>();
     
-    public void add(HES_Instanz h) {
+    public void add(HESInstanceState h) {
        processlist.add(h);
        fireContentsChanged(this, 0, getSize());
     }
@@ -25,11 +25,11 @@ public class ProcessListModel extends AbstractListModel {
         generateList();
     }
     
-    private static List<HES_Instanz> generateList() {
+    private static List<HESInstanceState> generateList() {
         return processlist;
     }
     
-    public List<HES_Instanz> getList() {
+    public List<HESInstanceState> getList() {
         return processlist;
     }
     
@@ -43,7 +43,7 @@ public class ProcessListModel extends AbstractListModel {
         return processlist.get(index);
     }
         
-    public void delete(HES_Instanz r) {
+    public void delete(HESInstanceState r) {
         processlist.remove(r);
         fireContentsChanged(this, 0, getSize());
     }
@@ -57,11 +57,11 @@ public class ProcessListModel extends AbstractListModel {
         return processlist.isEmpty();
     }
     
-    public boolean contains(HES_Instanz instanz) {
+    public boolean contains(HESInstanceState instanz) {
     	return processlist.contains(instanz);
     }
     
-    public int getIndex(HES_Instanz r) {
+    public int getIndex(HESInstanceState r) {
         return processlist.indexOf(r);
     }
 

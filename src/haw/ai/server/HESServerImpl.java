@@ -1,6 +1,6 @@
 package haw.ai.server;
 
-import haw.ai.server.alive.AliveBeacon;
+import haw.ai.server.alive.ServerController;
 import haw.ai.server.bestell_komponente.BestellFassade;
 import haw.ai.server.bestell_komponente.BestellFassadeImpl;
 import haw.ai.server.kunden_komponente.KundenFassade;
@@ -12,8 +12,8 @@ import haw.ai.server.liefer_komponente.LieferFassadeImpl;
 import haw.ai.server.rechnungs_komponente.RechnungsFassade;
 import haw.ai.server.rechnungs_komponente.RechnungsFassadeImpl;
 
-import java.rmi.AccessException;
-import java.rmi.NotBoundException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -23,145 +23,93 @@ public class HESServerImpl implements HESServer {
 	private String instanceName;
 	public final static String REGISTRY_HOST = "127.0.0.1";
 	public final static Integer REGISTRY_PORT = 1099;
-	protected Registry registry;
 	private BestellFassade bestellFassade;
 	private KundenFassade kundenFassade;
 	private LagerFassade lagerFassade;
 	private LieferFassade lieferFassade;
 	private RechnungsFassade rechnungsFassade;
-	protected AliveBeacon aliveBeacon;
+	private ServerController serverController;
+	private String serverRegistryHostname;
+	private Integer serverRegistryPort;
+	public final String clientRegistryHostname;
+	public final Integer clientRegistryPort;
+	private Registry clientRegistry = null;
+	private Registry serverRegistry = null;
 
-	public HESServerImpl() {
+	public HESServerImpl(String clientRegistryHostname, Integer clientRegistryPort) {
 		this.setInstanceName(UUID.randomUUID().toString());
+		this.clientRegistryHostname = clientRegistryHostname;
+		this.clientRegistryPort = clientRegistryPort;
+		createServerRegistry();
+		
 	}
 
-	public static HESServer create() {
-		HESServerImpl hesServer = new HESServerImpl();
-		try {
-			hesServer.registry = LocateRegistry.getRegistry(
-					hesServer.REGISTRY_HOST, hesServer.REGISTRY_PORT);
-		} catch (RemoteException e1) {
-		}
+	public static HESServer create(String clientRegistryHostname,
+			Integer clientRegistryPort) {
+		HESServerImpl hesServer = new HESServerImpl(clientRegistryHostname,
+				clientRegistryPort);
 
 		try {
-			hesServer.setBestellFassade(BestellFassadeImpl
-					.createBestellFassade(hesServer.registry,
-							hesServer.getInstanceName()));
-			hesServer.setKundenFassade(KundenFassadeImpl.createKundenFassade(
-					hesServer.registry, hesServer.getInstanceName()));
-			hesServer.setLagerFassade(LagerFassadeImpl.createLagerFassade(
-					hesServer.registry, hesServer.getInstanceName()));
-			hesServer.setLieferFassade(LieferFassadeImpl.createLieferFassade(
-					hesServer.registry, hesServer.getInstanceName()));
-			hesServer.setRechnungsFassade(RechnungsFassadeImpl
-					.createRechnungsFassade(hesServer.registry,
-							hesServer.getInstanceName()));
-			hesServer.aliveBeacon = new AliveBeacon(hesServer.registry,
-					hesServer.getInstanceName());
-			hesServer.aliveBeacon.start();
+			hesServer.setBestellFassade(BestellFassadeImpl.createBestellFassade(hesServer));
+			hesServer.setKundenFassade(KundenFassadeImpl.createKundenFassade(hesServer));
+			hesServer.setLagerFassade(LagerFassadeImpl.createLagerFassade(hesServer));
+			hesServer.setLieferFassade(LieferFassadeImpl.createLieferFassade(hesServer));
+			hesServer.setRechnungsFassade(RechnungsFassadeImpl.createRechnungsFassade(hesServer));
+			hesServer.setServerController(ServerController.createServerController(hesServer));
 		} catch (RemoteException e) {
 		}
 		return hesServer;
 	}
 
-	@Override
-	public BestellFassade getBestellFassade() {
-		// TODO Auto-generated method stub
-		return null;
+	public Registry getServerRegistry() {
+		return this.serverRegistry;
 	}
 
 	private void setBestellFassade(BestellFassade bestellFassade) {
 		this.bestellFassade = bestellFassade;
 	}
 
-	@Override
-	public KundenFassade getKundenFassade() {
-		KundenFassade result = null;
-		try {
-			// wir reichen nur das StubObjekt weiter. so brauch nicht das
-			// gesamte
-			// Kundenfassaden Objekt serialisiert werden.
-			result = ((KundenFassade) registry.lookup(this.kundenFassade
-					.bindName()));
-		} catch (AccessException e) {
-		} catch (RemoteException e) {
-		} catch (NotBoundException e) {
-		}
-		return result;
-	}
-
 	public void setKundenFassade(KundenFassade kundenFassade) {
 		this.kundenFassade = kundenFassade;
-	}
-
-	@Override
-	public LagerFassade getLagerFassade() {
-		LagerFassade result = null;
-		try {
-			result = ((LagerFassade) registry.lookup(this.lagerFassade
-					.bindName()));
-		} catch (AccessException e) {
-		} catch (RemoteException e) {
-		} catch (NotBoundException e) {
-		}
-		return result;
 	}
 
 	private void setLagerFassade(LagerFassade lagerFassade) {
 		this.lagerFassade = lagerFassade;
 	}
 
-	@Override
-	public LieferFassade getLieferFassade() {
-		LieferFassade result = null;
-		try {
-			result = ((LieferFassade) registry.lookup(this.lieferFassade
-					.bindName()));
-		} catch (AccessException e) {
-		} catch (RemoteException e) {
-		} catch (NotBoundException e) {
-		}
-		return result;
-	}
-
 	private void setLieferFassade(LieferFassade lieferFassade) {
 		this.lieferFassade = lieferFassade;
-	}
-
-	@Override
-	public RechnungsFassade getRechnungsFassade() {
-		RechnungsFassade result = null;
-		try {
-			result = ((RechnungsFassade) registry.lookup(this.rechnungsFassade
-					.bindName()));
-		} catch (AccessException e) {
-		} catch (RemoteException e) {
-		} catch (NotBoundException e) {
-		}
-		return result;
 	}
 
 	private void setRechnungsFassade(RechnungsFassade rechnungsFassade) {
 		this.rechnungsFassade = rechnungsFassade;
 	}
 
-	public BestellFassade getInstanceLocalBestellFassade() {
+	private void setServerController(ServerController serverController) {
+		this.serverController = serverController;
+	}
+	
+	public ServerController getServerController() {
+		return this.serverController;
+	}
+	
+	public BestellFassade getBestellFassade() {
 		return this.bestellFassade;
 	}
 
-	public KundenFassade getInstanceLocalKundenFassade() {
+	public KundenFassade getKundenFassade() {
 		return this.kundenFassade;
 	}
 
-	public LagerFassade getInstanceLocalLagerFassade() {
+	public LagerFassade getLagerFassade() {
 		return this.lagerFassade;
 	}
 
-	public LieferFassade getInstanceLocalLieferFassade() {
+	public LieferFassade getLieferFassade() {
 		return this.lieferFassade;
 	}
 
-	public RechnungsFassade getInstanceLocalRechnungsFassade() {
+	public RechnungsFassade getRechnungsFassade() {
 		return this.rechnungsFassade;
 	}
 
@@ -171,5 +119,39 @@ public class HESServerImpl implements HESServer {
 
 	private void setInstanceName(String instanceName) {
 		this.instanceName = instanceName;
+	}
+
+	public String getServerRegistryHostname() {
+		return this.serverRegistryHostname;
+	}
+
+	public Integer getServerRegistryPort() {
+		return this.serverRegistryPort;
+	}
+
+	public Registry getClientRegistry() {
+		if (this.clientRegistry == null) {
+			try {
+				this.clientRegistry = LocateRegistry.getRegistry(
+						clientRegistryHostname, clientRegistryPort);
+			} catch (RemoteException e) {
+			}
+		}
+		return this.clientRegistry;
+	}
+
+	private void createServerRegistry() {
+		if (this.serverRegistry == null) {
+			try {
+				this.serverRegistryHostname = InetAddress.getLocalHost()
+						.getHostName();
+				this.serverRegistryPort = REGISTRY_PORT; // FIXME needs to be
+															// increased somehow
+				this.serverRegistry = LocateRegistry
+						.createRegistry(getServerRegistryPort());
+			} catch (RemoteException e) {
+			} catch (UnknownHostException e) {
+			}
+		}
 	}
 }
