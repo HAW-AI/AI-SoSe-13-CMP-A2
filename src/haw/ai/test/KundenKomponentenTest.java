@@ -1,10 +1,10 @@
 package haw.ai.test;
 
 import static org.junit.Assert.*;
-import haw.ai.hibernate.HibernateUtil;
-import haw.ai.komponenten.kunden_komponente.Kunde;
-import haw.ai.komponenten.kunden_komponente.KundenFassadeImpl;
-import haw.ai.komponenten.persistenz.PersistenzService;
+import haw.ai.server.kunden_komponente.Kunde;
+import haw.ai.server.kunden_komponente.KundenFassadeImpl;
+import haw.ai.server.persistenz.HibernateUtil;
+import haw.ai.server.persistenz.PersistenzService;
 
 import org.junit.Test;
 

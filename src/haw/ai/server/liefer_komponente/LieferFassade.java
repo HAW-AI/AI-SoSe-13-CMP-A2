@@ -1,41 +1,22 @@
 package haw.ai.server.liefer_komponente;
 
+import haw.ai.server.bestell_komponente.Auftrag;
+import haw.ai.server.common.KomponentenFassade;
+
+import java.rmi.Remote;
 import java.util.Date;
 
-import haw.ai.server.bestell_komponente.Auftrag;
-
-public class LieferFassade {
-
-	public static Lieferung erstelleLieferung(Auftrag auftrag) {
-		return LieferRepository.erstelleLieferung(auftrag);
-	}
-
-
-	public static Transportauftrag erstelleTransportauftrag(
-			Lieferung lieferung, Date ausgangsDatum, boolean lieferungErfolgt,
-			Date lieferDatum, String transportDienstleister) {
-		return LieferRepository.erstelleTransportauftrag(lieferung,
-				ausgangsDatum, lieferungErfolgt, lieferDatum,
-				transportDienstleister);
-	}
-
+public interface LieferFassade extends KomponentenFassade, Remote {
+	public Lieferung erstelleLieferung(Auftrag auftrag);
+	public Transportauftrag erstelleTransportauftrag(Lieferung lieferung,
+			Date ausgangsDatum, boolean lieferungErfolgt, Date lieferDatum,
+			String transportDienstleister);
+	
 	/** Transportauftrag wird vom Transportdienstleister als erfolgt markiert 
 	 * 
 	 * @param transportAuftrag
 	 */
-	public static void markiereTransportErfolgt(
-			Transportauftrag transportAuftrag) {
-		if (transportAuftrag != null) {
-			LieferBusinessLogik.lieferungErfolgt(transportAuftrag);
-		}
-	}
-
-	public static void save(Lieferung lieferung) {
-		LieferRepository.save(lieferung);
-	}
-
-	public static void save(Transportauftrag transportauftrag) {
-		LieferRepository.save(transportauftrag);
-	}
-
+	public void markiereTransportErfolgt(Transportauftrag transportAuftrag);
+	public void save(Lieferung lieferung);
+	public void save(Transportauftrag transportauftrag);
 }

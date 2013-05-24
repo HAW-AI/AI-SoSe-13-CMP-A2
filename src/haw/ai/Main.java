@@ -3,17 +3,17 @@ package haw.ai;
 import java.util.HashMap;
 import java.util.Map;
 
-import haw.ai.hibernate.HibernateUtil;
-import haw.ai.komponenten.bestell_komponente.Angebot;
-import haw.ai.komponenten.bestell_komponente.Auftrag;
-import haw.ai.komponenten.bestell_komponente.BestellFassade;
-import haw.ai.komponenten.common.DateUtil;
-import haw.ai.komponenten.kunden_komponente.Kunde;
-import haw.ai.komponenten.kunden_komponente.KundenFassadeImpl;
-import haw.ai.komponenten.lager_komponente.LagerFassade;
-import haw.ai.komponenten.lager_komponente.Produkt;
-import haw.ai.komponenten.liefer_komponente.LieferFassade;
-import haw.ai.komponenten.rechnungs_komponente.RechnungsFassade;
+import haw.ai.server.bestell_komponente.Angebot;
+import haw.ai.server.bestell_komponente.Auftrag;
+import haw.ai.server.bestell_komponente.BestellFassadeImpl;
+import haw.ai.server.common.DateUtil;
+import haw.ai.server.kunden_komponente.Kunde;
+import haw.ai.server.kunden_komponente.KundenFassadeImpl;
+import haw.ai.server.lager_komponente.LagerFassadeImpl;
+import haw.ai.server.lager_komponente.Produkt;
+import haw.ai.server.liefer_komponente.LieferFassadeImpl;
+import haw.ai.server.persistenz.HibernateUtil;
+import haw.ai.server.rechnungs_komponente.RechnungsFassadeImpl;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

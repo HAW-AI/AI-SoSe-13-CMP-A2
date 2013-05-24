@@ -6,15 +6,16 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 public class KundenFassadeImpl extends UnicastRemoteObject implements KundenFassade {
-	public final static String registryHost = "127.0.0.1";
-	public final static Integer registryPort = 1099;
+	
 	public final static String bindFassadenName = KundenFassade.class.getName();
 
 	private static final long serialVersionUID = 1710093868780112115L;
 	private String instanceName;
+	private Registry registry;
 
-	private KundenFassadeImpl(String instanceName) throws RemoteException {
+	private KundenFassadeImpl(Registry registry, String instanceName) throws RemoteException {
 		this.instanceName = instanceName;
+		this.registry = registry;
 	}
 
 	public Kunde erstelleKunden(String name, String adresse) throws RemoteException {
@@ -32,14 +33,13 @@ public class KundenFassadeImpl extends UnicastRemoteObject implements KundenFass
 		}
 	}
 	
-	public static KundenFassade createKundenFassade(String instanceName) throws RemoteException {
-		KundenFassadeImpl kundenFassade = new KundenFassadeImpl(instanceName);
-		Registry registry = LocateRegistry.getRegistry(registryHost, registryPort);
+	public static KundenFassade createKundenFassade(Registry registry, String instanceName) throws RemoteException {
+		KundenFassadeImpl kundenFassade = new KundenFassadeImpl(registry, instanceName);
 		registry.rebind(kundenFassade.bindName(), kundenFassade);
 		return kundenFassade;
 	}
 	
-	private String bindName() {
+	public String bindName() {
 		return instanceName + " - " + bindFassadenName;
 	}
 
@@ -47,4 +47,5 @@ public class KundenFassadeImpl extends UnicastRemoteObject implements KundenFass
 	public void sayHello() throws RemoteException {
 		System.out.println("HELLO");
 	}
+	
 }

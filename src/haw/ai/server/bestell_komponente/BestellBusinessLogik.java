@@ -3,53 +3,61 @@ package haw.ai.server.bestell_komponente;
 import java.util.Date;
 import java.util.Map.Entry;
 
+import haw.ai.server.HESServer;
+import haw.ai.server.HESServerImpl;
 import haw.ai.server.common.DateUtil;
 import haw.ai.server.common.KomponentenBusinessLogik;
-import haw.ai.server.lager_komponente.LagerFassade;
+import haw.ai.server.lager_komponente.LagerFassadeImpl;
 import haw.ai.server.lager_komponente.Produkt;
-import haw.ai.server.liefer_komponente.LieferFassade;
+import haw.ai.server.liefer_komponente.LieferFassadeImpl;
 import haw.ai.server.liefer_komponente.Lieferung;
 import haw.ai.server.rechnungs_komponente.Rechnung;
-import haw.ai.server.rechnungs_komponente.RechnungsFassade;
+import haw.ai.server.rechnungs_komponente.RechnungsFassadeImpl;
 
 public class BestellBusinessLogik implements KomponentenBusinessLogik {
+	
+	private HESServerImpl hesServer;
 
-	public static void bearbeiteAuftrag(Auftrag auftrag) {
-		boolean bestandAusreichend = LagerFassade.pruefeLagerbestand(auftrag
+	public BestellBusinessLogik(HESServerImpl hesServer) {
+		this.hesServer = hesServer;
+	}
+
+	public void bearbeiteAuftrag(Auftrag auftrag) {
+		boolean bestandAusreichend = hesServer.getInstanceLocalLagerFassade().pruefeLagerbestand(auftrag
 				.getAngebot().getProdukte());
 
 		if (bestandAusreichend) {
 			for (Entry<Produkt, Integer> entry : auftrag.getAngebot()
 					.getProdukte().entrySet()) {
-				LagerFassade.erstelleWarenausgangsmeldung(entry.getKey(),
+				hesServer.getInstanceLocalLagerFassade().erstelleWarenausgangsmeldung(entry.getKey(),
 						DateUtil.now(), entry.getValue());
 			}
 
-			Lieferung lieferung = LieferFassade.erstelleLieferung(auftrag);
+			Lieferung lieferung = hesServer.getInstanceLocalLieferFassade().erstelleLieferung(auftrag);
 			auftrag.setLieferung(lieferung);
 
 			String transportDienstleister = "DHL";
-			LieferFassade.erstelleTransportauftrag(lieferung, DateUtil.now(),
+			hesServer.getInstanceLocalLieferFassade().erstelleTransportauftrag(lieferung, DateUtil.now(),
 					false, DateUtil.daysFromNow(1), transportDienstleister);
 
-			Rechnung rechnung = RechnungsFassade.erstelleRechnung(
+			Rechnung rechnung = hesServer.getInstanceLocalRechnungsFassade().erstelleRechnung(
 					DateUtil.now(), auftrag);
 			auftrag.setRechnung(rechnung);
 
 			BestellRepository.save(auftrag);
-			RechnungsFassade.save(rechnung);
-			LieferFassade.save(lieferung);
+			hesServer.getInstanceLocalRechnungsFassade().save(rechnung);
+			hesServer.getInstanceLocalLieferFassade().save(lieferung);
 		}
 	}
 
-	public static void auftragAbschliessen(Auftrag auftrag) {
-		RechnungsFassade.rechnungBezahltWennZahlungAusreichend(auftrag
+	public void auftragAbschliessen(Auftrag auftrag) {
+		hesServer.getInstanceLocalRechnungsFassade().rechnungBezahltWennZahlungAusreichend(auftrag
 				.getRechnung());
 		if (auftrag.getRechnung().isIstBezahlt()) {
 			auftrag.setAuftragAbgeschlossen();
 			BestellRepository.save(auftrag);
 		}
-		RechnungsFassade.save(auftrag.getRechnung());
+		hesServer.getInstanceLocalRechnungsFassade().save(auftrag.getRechnung());
 	}
 
 }

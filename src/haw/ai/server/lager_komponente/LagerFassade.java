@@ -1,16 +1,14 @@
 package haw.ai.server.lager_komponente;
 
+import haw.ai.server.common.KomponentenFassade;
+
+import java.rmi.Remote;
 import java.util.Date;
 import java.util.Map;
 
-import haw.ai.server.common.KomponentenFassade;
-
-public class LagerFassade implements KomponentenFassade {
-
-	public static Produkt erstelleProdukt(String name, int lagerbestand) {
-		return LagerRepository.erstelleProdukt(name, lagerbestand);
-	}
-
+public interface LagerFassade extends KomponentenFassade, Remote {
+	public Produkt erstelleProdukt(String name, int lagerbestand);
+	
 	/**
 	 * Wird vom Lageristen aufgrufen, wenn Waren das Lager verlassen.
 	 * 
@@ -19,36 +17,18 @@ public class LagerFassade implements KomponentenFassade {
 	 * @param menge
 	 * @return
 	 */
-	public static Warenausgangsmeldung erstelleWarenausgangsmeldung(
-			Produkt produkt, Date datum, int menge) {
-		return LagerRepository.erstelleWarenausgangsmeldung(produkt, datum,
-				menge);
-	}
-
+	public Warenausgangsmeldung erstelleWarenausgangsmeldung(Produkt produkt,
+			Date datum, int menge);
+	
 	/**
 	 * gibt momentan immer true zurueck, da Einkaufskomponente nicht
 	 * implementiert ist
 	 * 
 	 * @return true
 	 */
-	public static boolean pruefeLagerbestand(Map<Produkt, Integer> produkte) {
-		return LagerBusinessLogik.pruefeLagerbestand(produkte);
-	}
-
-	public static void save(Produkt produkt) {
-		LagerRepository.save(produkt);
-	}
-
-	public static void save(Warenausgangsmeldung warenausgangsmeldung) {
-		LagerRepository.save(warenausgangsmeldung);
-	}
-
-	public static Produkt findeProdukt(Integer produktId) {
-		return LagerRepository.findeProdukt(produktId);
-	}
-
-	public static Produkt findeProdukt(String produktName) {
-		return LagerRepository.findeProdukt(produktName);
-	}
-
+	public boolean pruefeLagerbestand(Map<Produkt, Integer> produkte);
+	public void save(Produkt produkt);
+	public void save(Warenausgangsmeldung warenausgangsmeldung);
+	public Produkt findeProdukt(Integer produktId);
+	public Produkt findeProdukt(String produktName);
 }

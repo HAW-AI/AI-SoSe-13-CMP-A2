@@ -42,7 +42,7 @@ public class ProcessListModel extends AbstractListModel {
     public Object getElementAt(int index) {
         return processlist.get(index);
     }
-    
+        
     public void delete(HES_Instanz r) {
         processlist.remove(r);
         fireContentsChanged(this, 0, getSize());
@@ -55,6 +55,10 @@ public class ProcessListModel extends AbstractListModel {
     
     public boolean isEmpty() {
         return processlist.isEmpty();
+    }
+    
+    public boolean contains(HES_Instanz instanz) {
+    	return processlist.contains(instanz);
     }
     
     public int getIndex(HES_Instanz r) {

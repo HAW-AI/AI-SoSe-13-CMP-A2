@@ -10,4 +10,5 @@ public interface KundenFassade extends KomponentenFassade, Remote {
 	public Kunde findeKunden(String name) throws RemoteException;
 	public void save(Kunde kunde) throws RemoteException;
 	public void sayHello() throws RemoteException;
+	public String bindName();
 }
