@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package haw.ai.client.gui.dashboard;
 
 import java.awt.Color;
@@ -21,7 +17,7 @@ public class ProcessListCellRenderer extends JLabel implements ListCellRenderer 
   public Component getListCellRendererComponent(JList list, Object value,
       int index, boolean isSelected, boolean cellHasFocus) {
 
-    HES_Instanz instanz = (HES_Instanz)value;
+    HESInstanceState instanz = (HESInstanceState)value;
 
     this.setText(instanz.getName());
     

@@ -1,5 +1,6 @@
 package haw.ai.server.liefer_komponente;
 
+import haw.ai.common.Log;
 import haw.ai.server.HESServerImpl;
 import haw.ai.server.bestell_komponente.Auftrag;
 
@@ -24,6 +25,7 @@ public class LieferFassadeImpl extends UnicastRemoteObject implements LieferFass
 	public Transportauftrag erstelleTransportauftrag(
 			Lieferung lieferung, Date ausgangsDatum, boolean lieferungErfolgt,
 			Date lieferDatum, String transportDienstleister) {
+		Log.log(LieferFassadeImpl.class.getName(), hesServer.getInstanceName(), "erstelleTransportauftrag");
 		return LieferRepository.erstelleTransportauftrag(lieferung,
 				ausgangsDatum, lieferungErfolgt, lieferDatum,
 				transportDienstleister);
@@ -32,20 +34,25 @@ public class LieferFassadeImpl extends UnicastRemoteObject implements LieferFass
 	public void markiereTransportErfolgt(
 			Transportauftrag transportAuftrag) {
 		if (transportAuftrag != null) {
+			Log.log(LieferFassadeImpl.class.getName(), hesServer.getInstanceName(), "markiereTransportErfolgt");
 			LieferBusinessLogik.lieferungErfolgt(transportAuftrag);
 		}
 	}
 
 	public void save(Lieferung lieferung) {
+		Log.log(LieferFassadeImpl.class.getName(), hesServer.getInstanceName(), "save", "lieferung", "" + lieferung.getId());
 		LieferRepository.save(lieferung);
 	}
 
 	public void save(Transportauftrag transportauftrag) {
+		Log.log(LieferFassadeImpl.class.getName(), hesServer.getInstanceName(), "save", "transportauftrag", "" + transportauftrag.getId());
 		LieferRepository.save(transportauftrag);
 	}
 	
 	public static LieferFassade createLieferFassade(HESServerImpl hesServer) throws RemoteException {
+		Log.log(LieferFassadeImpl.class.getName(), hesServer.getInstanceName(), "createLieferFassade");
 		LieferFassade lieferFassade = new LieferFassadeImpl(hesServer);
+		Log.log(LieferFassadeImpl.class.getName(), hesServer.getInstanceName(), "createLieferFassade", "binding in serverregistry");
 		hesServer.getServerRegistry().rebind(LieferFassade.class.getSimpleName(), lieferFassade);
 		return lieferFassade;
 	}

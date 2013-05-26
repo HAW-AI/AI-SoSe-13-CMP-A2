@@ -1,8 +1,11 @@
 package haw.ai.client;
 
-import haw.ai.server.alive.ServerController;
+import haw.ai.server.alive.ServerControllerImpl;
 import haw.ai.server.bestell_komponente.BestellFassade;
 import haw.ai.server.kunden_komponente.KundenFassade;
+import haw.ai.server.lager_komponente.LagerFassade;
+import haw.ai.server.liefer_komponente.LieferFassade;
+import haw.ai.server.rechnungs_komponente.RechnungsFassade;
 
 import java.rmi.AccessException;
 import java.rmi.NotBoundException;
@@ -28,10 +31,10 @@ public class RemoteHESInstance {
 		return hesInstanceName;
 	}
 	
-	public ServerController getServerController() {
-		ServerController serverController = null;
+	public ServerControllerImpl getServerController() {
+		ServerControllerImpl serverController = null;
 		try {
-			serverController = (ServerController) registry.lookup(ServerController.class.getSimpleName());
+			serverController = (ServerControllerImpl) registry.lookup(ServerControllerImpl.class.getSimpleName());
 		} catch (AccessException e) {
 		} catch (RemoteException e) {
 		} catch (NotBoundException e) {
@@ -61,6 +64,39 @@ public class RemoteHESInstance {
 		return bestellFassade;
 	}
 	
+	public LagerFassade getLagerFassade() {
+		LagerFassade lagerFassade = null;
+		try {
+			lagerFassade = (LagerFassade) registry.lookup(LagerFassade.class.getSimpleName());
+		} catch (AccessException e) {
+		} catch (RemoteException e) {
+		} catch (NotBoundException e) {
+		}
+		return lagerFassade;
+	}
+	
+	public LieferFassade getLieferFassade() {
+		LieferFassade lieferFassade = null;
+		try {
+			lieferFassade = (LieferFassade) registry.lookup(LieferFassade.class.getSimpleName());
+		} catch (AccessException e) {
+		} catch (RemoteException e) {
+		} catch (NotBoundException e) {
+		}
+		return lieferFassade;
+	}
+	
+	public RechnungsFassade getRechnungsFassade() {
+		RechnungsFassade rechnungsFassade = null;
+		try {
+			rechnungsFassade = (RechnungsFassade) registry.lookup(RechnungsFassade.class.getSimpleName());
+		} catch (AccessException e) {
+		} catch (RemoteException e) {
+		} catch (NotBoundException e) {
+		}
+		return rechnungsFassade;
+	}
+	
 	private void locateHESServerRegistry() {
 		try {
 			this.registry = LocateRegistry.getRegistry(hesInstanceHostame, hesInstanceRegistryPort);
@@ -70,5 +106,10 @@ public class RemoteHESInstance {
 
 	private void setHesInstanceName(String hesInstanceName) {
 		this.hesInstanceName = hesInstanceName;
+	}
+
+	@Override
+	public int hashCode() {
+		return hesInstanceName.hashCode();
 	}
 }

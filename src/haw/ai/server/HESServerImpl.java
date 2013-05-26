@@ -1,6 +1,8 @@
 package haw.ai.server;
 
+import haw.ai.common.Log;
 import haw.ai.server.alive.ServerController;
+import haw.ai.server.alive.ServerControllerImpl;
 import haw.ai.server.bestell_komponente.BestellFassade;
 import haw.ai.server.bestell_komponente.BestellFassadeImpl;
 import haw.ai.server.kunden_komponente.KundenFassade;
@@ -22,7 +24,7 @@ import java.util.UUID;
 public class HESServerImpl implements HESServer {
 	private String instanceName;
 	public final static String REGISTRY_HOST = "127.0.0.1";
-	public final static Integer REGISTRY_PORT = 1099;
+	public final static Integer REGISTRY_PORT = 1100;
 	private BestellFassade bestellFassade;
 	private KundenFassade kundenFassade;
 	private LagerFassade lagerFassade;
@@ -50,12 +52,13 @@ public class HESServerImpl implements HESServer {
 				clientRegistryPort);
 
 		try {
+			Log.log(HESServerImpl.class.getName(), hesServer.getInstanceName(), "create", "setzen aller Fassaden");
 			hesServer.setBestellFassade(BestellFassadeImpl.createBestellFassade(hesServer));
 			hesServer.setKundenFassade(KundenFassadeImpl.createKundenFassade(hesServer));
 			hesServer.setLagerFassade(LagerFassadeImpl.createLagerFassade(hesServer));
 			hesServer.setLieferFassade(LieferFassadeImpl.createLieferFassade(hesServer));
 			hesServer.setRechnungsFassade(RechnungsFassadeImpl.createRechnungsFassade(hesServer));
-			hesServer.setServerController(ServerController.createServerController(hesServer));
+			hesServer.setServerController(ServerControllerImpl.createServerController(hesServer));
 		} catch (RemoteException e) {
 		}
 		return hesServer;
@@ -131,6 +134,7 @@ public class HESServerImpl implements HESServer {
 
 	public Registry getClientRegistry() {
 		if (this.clientRegistry == null) {
+			Log.log(HESServerImpl.class.getName(), getInstanceName(), "getClientRegistry");
 			try {
 				this.clientRegistry = LocateRegistry.getRegistry(
 						clientRegistryHostname, clientRegistryPort);
@@ -142,13 +146,14 @@ public class HESServerImpl implements HESServer {
 
 	private void createServerRegistry() {
 		if (this.serverRegistry == null) {
+			Log.log(HESServerImpl.class.getName(), getInstanceName(), "createServerRegistry");
 			try {
 				this.serverRegistryHostname = InetAddress.getLocalHost()
 						.getHostName();
-				this.serverRegistryPort = REGISTRY_PORT; // FIXME needs to be
-															// increased somehow
+				this.serverRegistryPort = REGISTRY_PORT;
 				this.serverRegistry = LocateRegistry
 						.createRegistry(getServerRegistryPort());
+				Log.log(HESServerImpl.class.getName(), getInstanceName(), "createServerRegistry", getServerRegistryHostname(), "" + getServerRegistryPort());
 			} catch (RemoteException e) {
 			} catch (UnknownHostException e) {
 			}

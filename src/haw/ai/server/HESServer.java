@@ -1,5 +1,6 @@
 package haw.ai.server;
 
+import haw.ai.server.alive.ServerController;
 import haw.ai.server.bestell_komponente.BestellFassade;
 import haw.ai.server.kunden_komponente.KundenFassade;
 import haw.ai.server.lager_komponente.LagerFassade;
@@ -14,5 +15,5 @@ public interface HESServer extends Remote {
 	public LagerFassade getLagerFassade();
 	public LieferFassade getLieferFassade();
 	public RechnungsFassade getRechnungsFassade();
-	public String getInstanceName();
+	public ServerController getServerController();
 }
