@@ -1,12 +1,14 @@
 package haw.ai.client.gui.dashboard;
 
+import java.io.Serializable;
+
 import haw.ai.client.Dispatcher;
-import haw.ai.client.Starter;
 import haw.ai.client.TestClient;
 import haw.ai.common.Log;
+import haw.ai.starter.Client;
 
-public class Dashboard {
-
+public class Dashboard implements Serializable {
+	private static final long serialVersionUID = -232693973283996692L;
 	private Dashboard_GUI gui;
 	private Dispatcher dispatcher;
 

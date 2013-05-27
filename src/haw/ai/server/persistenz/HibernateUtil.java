@@ -12,7 +12,7 @@ public class HibernateUtil {
 	@SuppressWarnings("deprecation")
 	private static SessionFactory buildSessionFactory() {
 		try {
-			Configuration conf = new Configuration().configure();
+			Configuration conf = new Configuration().configure("hibernate.cfg.xml");
 			SchemaExport schema = new SchemaExport(conf);
 			schema.create(true, true);
 			return conf.buildSessionFactory();

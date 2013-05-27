@@ -22,6 +22,10 @@ public class TestClient {
 
 		try {
 			
+			while(dispatcher.getRechnungsFassade() == null) {
+				Thread.sleep(1000);
+			}
+			
 			dispatcher.getKundenFassade().erstelleKunden("Peter Meier",
 					"Einbahnstrasse 10");
 			Log.log(TestClient.class.getName(), "Kunde wurde erstellt");
@@ -56,6 +60,7 @@ public class TestClient {
 
 		} catch (RemoteException e) {
 			e.printStackTrace();
+		} catch (InterruptedException e) {
 		}
 	}
 

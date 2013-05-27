@@ -3,11 +3,12 @@ package haw.ai.server.lager_komponente;
 import haw.ai.server.common.KomponentenFassade;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.Map;
 
 public interface LagerFassade extends KomponentenFassade, Remote {
-	public Produkt erstelleProdukt(String name, int lagerbestand);
+	public Produkt erstelleProdukt(String name, int lagerbestand) throws RemoteException;
 	
 	/**
 	 * Wird vom Lageristen aufgrufen, wenn Waren das Lager verlassen.
@@ -18,7 +19,7 @@ public interface LagerFassade extends KomponentenFassade, Remote {
 	 * @return
 	 */
 	public Warenausgangsmeldung erstelleWarenausgangsmeldung(Produkt produkt,
-			Date datum, int menge);
+			Date datum, int menge) throws RemoteException;
 	
 	/**
 	 * gibt momentan immer true zurueck, da Einkaufskomponente nicht
@@ -26,9 +27,9 @@ public interface LagerFassade extends KomponentenFassade, Remote {
 	 * 
 	 * @return true
 	 */
-	public boolean pruefeLagerbestand(Map<Produkt, Integer> produkte);
-	public void save(Produkt produkt);
-	public void save(Warenausgangsmeldung warenausgangsmeldung);
-	public Produkt findeProdukt(Integer produktId);
-	public Produkt findeProdukt(String produktName);
+	public boolean pruefeLagerbestand(Map<Produkt, Integer> produkte) throws RemoteException;
+	public void save(Produkt produkt) throws RemoteException;
+	public void save(Warenausgangsmeldung warenausgangsmeldung) throws RemoteException;
+	public Produkt findeProdukt(Integer produktId) throws RemoteException;
+	public Produkt findeProdukt(String produktName) throws RemoteException;
 }

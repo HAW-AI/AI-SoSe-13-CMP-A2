@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<project name="Ant-Test" default="main" basedir=".">
+	<property name="src.dir" location="${basedir}/src" />
+	<property name="src-test.dir" location="${basedir}/test" />
+	<property name="build.dir" location="${basedir}/bin" />
+	<property name="lib.dir" location="${basedir}/lib" />
+	<property name="build.main.dir" location="${build.dir}" />
+	<property name="build.test.dir" location="${basedir}/bin-test" />
+	<property name="dist.dir" location="${basedir}/dist" />
+	<property name="dist.lib.dir" location="${dist.dir}/lib" />
+
+	<path id="build.class.path">
+		<fileset dir="${basedir}/lib">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+	
+
+	<target name="compile" depends="clean,makedir">
+		<javac srcdir="${src.dir}" destdir="${build.main.dir}">
+			<classpath refid="build.class.path" />
+		</javac>
+	</target>
+
+	<target name="compile-test" depends="compile">
+		<javac srcdir="${src-test.dir}" destdir="${build.test.dir}">
+			<classpath>
+				<path refid="build.class.path" />
+				<pathelement location="${build.main.dir}" />
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="dist" depends="compile">
+		<copy todir="${dist.dir}">
+			<fileset dir="${basedir}">
+			    <include name="the.policy" />
+				<include name="client.sh" />
+				<include name="server.sh" />
+				<include name="hibernate.cfg.xml" />
+			</fileset>
+		</copy>
+		<mkdir dir="${dist.lib.dir}"/>
+		<copy todir="${dist.lib.dir}">
+			<fileset  dir="${lib.dir}">
+				<include name="antlr-2.7.7.jar" />
+				<include name="dom4j-1.6.1.jar" />
+				<include name="hibernate-commons-annotations-4.0.1.Final.jar" />
+				<include name="hibernate-core-4.2.0.Final.jar" />
+				<include name="hibernate-jpa-2.0-api-1.0.1.Final.jar" />
+				<include name="javassist-3.15.0-GA.jar" />
+				<include name="jboss-logging-3.1.0.GA.jar" />
+				<include name="jboss-transaction-api_1.1_spec-1.0.0.Final.jar" />
+				<include name="mysql-connector-java-5.1.24-bin.jar" />
+			</fileset>
+		</copy>
+		<chmod perm="ug+rx">
+			<fileset dir="${dist.dir}">
+				<include name="*.sh" />
+			</fileset>
+		</chmod>
+		<manifestclasspath property="lib.list" jarfile="${dist.dir}/client.jar">
+			<classpath>
+				<fileset dir="${dist.lib.dir}" includes="*.jar" />
+			</classpath>
+		</manifestclasspath>
+		<jar destfile="${dist.dir}/client.jar" basedir="${build.main.dir}">
+			<manifest>
+				<attribute name="Main-Class" value="haw.ai.starter.Client" />
+				<attribute name="Class-Path" value="${lib.list}" />
+			</manifest>
+		</jar>
+		<jar destfile="${dist.dir}/server.jar" basedir="${build.main.dir}">
+			<manifest>
+				<attribute name="Main-Class" value="haw.ai.starter.Server" />
+				<attribute name="Class-Path" value="${lib.list}" />
+			</manifest>
+		</jar>
+	</target>
+	<target name="test" depends="compile,compile-test">
+		<junit printsummary="yes" haltonfailure="yes" showoutput="yes">
+			<formatter type="plain" usefile="false" />
+			<classpath>
+				<path refid="build.class.path" />
+				<pathelement path="${build.main.dir}" />
+				<pathelement path="${build.test.dir}" />
+			</classpath>
+			<batchtest>
+				<fileset dir="${src-test.dir}">
+					<include name="**/*.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+	<target name="clean">
+		<delete dir="${build.dir}" />
+		<delete dir="${build.test.dir}" />
+		<delete dir="${dist.dir}" />
+	</target>
+
+	<target name="makedir">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${dist.dir}" />
+		<mkdir dir="${build.test.dir}" />
+	</target>
+
+	<target name="main" depends="compile,test,dist">
+	</target>
+
+</project>

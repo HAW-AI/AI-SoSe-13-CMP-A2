@@ -1,6 +1,5 @@
 package haw.ai.client;
 
-import haw.ai.client.gui.dashboard.Dashboard;
 import haw.ai.common.Log;
 import haw.ai.server.bestell_komponente.BestellFassade;
 import haw.ai.server.kunden_komponente.KundenFassade;
@@ -15,7 +14,7 @@ import java.util.List;
 public class DispatcherImpl implements Dispatcher {
 
 	// Dokumentation siehe Dispatcher-Interface
-
+	private static final long serialVersionUID = -2798208426179001168L;
 	private List<RemoteHESInstance> liveHESInstances;
 	private Registry clientRegistry;
 	private static int i;
@@ -46,32 +45,59 @@ public class DispatcherImpl implements Dispatcher {
 	}
 
 	public BestellFassade getBestellFassade() {
-		return chooseNextInstance().getBestellFassade();
+		RemoteHESInstance instance = chooseNextInstance();
+		if (instance != null) {
+			return instance.getBestellFassade();			
+		} else {
+			return null;
+		}
 	}
 
 	public KundenFassade getKundenFassade() {
-		return chooseNextInstance().getKundenFassade();
+		RemoteHESInstance instance = chooseNextInstance();
+		if (instance != null) {
+			return instance.getKundenFassade();			
+		} else {
+			return null;
+		}
 	}
 
 	public LagerFassade getLagerFassade() {
-		return chooseNextInstance().getLagerFassade();
+		RemoteHESInstance instance = chooseNextInstance();
+		if (instance != null) {
+			return instance.getLagerFassade();			
+		} else {
+			return null;
+		}
 	}
 
 	public LieferFassade getLieferFassade() {
-		return chooseNextInstance().getLieferFassade();
+		RemoteHESInstance instance = chooseNextInstance();
+		if (instance != null) {
+			return instance.getLieferFassade();			
+		} else {
+			return null;
+		}
 	}
 
 	public RechnungsFassade getRechnungsFassade() {
-		return chooseNextInstance().getRechnungsFassade();
+		RemoteHESInstance instance = chooseNextInstance();
+		if (instance != null) {
+			return instance.getRechnungsFassade();			
+		} else {
+			return null;
+		}
 	}
 
 	private RemoteHESInstance chooseNextInstance() {
 		Log.log(DispatcherImpl.class.getName(), "CHOOSE NEW INSTANCE");
+		Log.log(DispatcherImpl.class.getName(), "number of registered instances:", "" + liveHESInstances.size());
 		if (!liveHESInstances.isEmpty()) {
 			if (i >= liveHESInstances.size()) {
 				i = 0;
 			}
 			RemoteHESInstance instance = liveHESInstances.get(i);
+			Log.log(DispatcherImpl.class.getName(), "chose: ", instance.getHesInstanceName());
 			i++;
 			return instance;
 		} else

@@ -1,4 +1,6 @@
 package haw.ai.server.common;
 
-public interface KomponentenFassade {
+import java.io.Serializable;
+
+public interface KomponentenFassade extends Serializable {
 }

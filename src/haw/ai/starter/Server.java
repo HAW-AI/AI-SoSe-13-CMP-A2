@@ -1,6 +1,8 @@
-package haw.ai.server;
+package haw.ai.starter;
 
 import haw.ai.common.Log;
+import haw.ai.server.HESServer;
+import haw.ai.server.HESServerImpl;
 
 import java.rmi.RemoteException;
 

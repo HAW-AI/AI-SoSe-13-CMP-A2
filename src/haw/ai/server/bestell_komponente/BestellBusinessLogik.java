@@ -7,6 +7,7 @@ import haw.ai.server.lager_komponente.Produkt;
 import haw.ai.server.liefer_komponente.Lieferung;
 import haw.ai.server.rechnungs_komponente.Rechnung;
 
+import java.rmi.RemoteException;
 import java.util.Map.Entry;
 
 public class BestellBusinessLogik implements KomponentenBusinessLogik {
@@ -17,7 +18,7 @@ public class BestellBusinessLogik implements KomponentenBusinessLogik {
 		this.hesServer = hesServer;
 	}
 
-	public void bearbeiteAuftrag(Auftrag auftrag) {
+	public void bearbeiteAuftrag(Auftrag auftrag) throws RemoteException {
 		boolean bestandAusreichend = hesServer.getLagerFassade().pruefeLagerbestand(auftrag
 				.getAngebot().getProdukte());
 
@@ -45,7 +46,7 @@ public class BestellBusinessLogik implements KomponentenBusinessLogik {
 		}
 	}
 
-	public void auftragAbschliessen(Auftrag auftrag) {
+	public void auftragAbschliessen(Auftrag auftrag) throws RemoteException {
 		hesServer.getRechnungsFassade().rechnungBezahltWennZahlungAusreichend(auftrag
 				.getRechnung());
 		if (auftrag.getRechnung().isIstBezahlt()) {

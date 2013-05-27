@@ -28,7 +28,7 @@ public class BestellFassadeImpl extends UnicastRemoteObject implements BestellFa
 				gueltigBis, gesamtPreis);
 	}
 
-	public Auftrag erstelleAuftrag(Angebot angebot, Date beauftragtAm) {
+	public Auftrag erstelleAuftrag(Angebot angebot, Date beauftragtAm) throws RemoteException {
 		Auftrag auftrag = BestellRepository.erstelleAuftrag(angebot,
 				beauftragtAm);
 		Log.log(BestellFassadeImpl.class.getName(), hesServer.getInstanceName(), "erstelleAuftrag");
@@ -36,7 +36,7 @@ public class BestellFassadeImpl extends UnicastRemoteObject implements BestellFa
 		return auftrag;
 	}
 
-	public void auftragAbschliessen(Auftrag auftrag) {
+	public void auftragAbschliessen(Auftrag auftrag) throws RemoteException {
 		if (auftrag != null) {
 			Log.log(BestellFassadeImpl.class.getName(), hesServer.getInstanceName(), "auftragAbschliessen");
 			this.bestellBusinessLogik.auftragAbschliessen(auftrag);

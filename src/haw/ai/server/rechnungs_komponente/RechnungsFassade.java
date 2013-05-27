@@ -4,13 +4,14 @@ import haw.ai.server.bestell_komponente.Auftrag;
 import haw.ai.server.common.KomponentenFassade;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.Date;
 
 public interface RechnungsFassade extends KomponentenFassade, Remote {
 	
-	public Rechnung erstelleRechnung(Date rechnungsDatum, Auftrag auftrag);
+	public Rechnung erstelleRechnung(Date rechnungsDatum, Auftrag auftrag) throws RemoteException;
 	public Zahlungseingang erstelleZahlungseingang(Rechnung rechnung,
-			Date eingangsDatum, int betrag);
+			Date eingangsDatum, int betrag) throws RemoteException;
 	
 	/**
 	 * Rechnung wird vom Buchhalter nur dann als bezahlt markiert, wenn sie
@@ -22,8 +23,8 @@ public interface RechnungsFassade extends KomponentenFassade, Remote {
 	 * 
 	 * @param rechnung
 	 */
-	public void rechnungBezahltWennZahlungAusreichend(Rechnung rechnung);
-	public void save(Rechnung rechnung);
-	public void save(Zahlungseingang zahlungseingang);
+	public void rechnungBezahltWennZahlungAusreichend(Rechnung rechnung) throws RemoteException;
+	public void save(Rechnung rechnung) throws RemoteException;
+	public void save(Zahlungseingang zahlungseingang) throws RemoteException;
 
 }

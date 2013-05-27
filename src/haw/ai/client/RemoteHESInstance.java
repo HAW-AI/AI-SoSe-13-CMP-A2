@@ -110,6 +110,27 @@ public class RemoteHESInstance {
 
 	@Override
 	public int hashCode() {
-		return hesInstanceName.hashCode();
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((hesInstanceName == null) ? 0 : hesInstanceName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RemoteHESInstance other = (RemoteHESInstance) obj;
+		if (hesInstanceName == null) {
+			if (other.hesInstanceName != null)
+				return false;
+		} else if (!hesInstanceName.equals(other.hesInstanceName))
+			return false;
+		return true;
 	}
 }

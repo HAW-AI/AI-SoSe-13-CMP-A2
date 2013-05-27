@@ -4,32 +4,22 @@ import haw.ai.client.gui.dashboard.Dashboard;
 import haw.ai.common.Log;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HESHealthMonitorImpl extends Thread implements HESHealthMonitor {
-
-	private static final int CHECK_SERVER_HEALTH_EVERY_N_MILLISECONDS = 2000;
+public class HESHealthMonitorImpl extends UnicastRemoteObject implements HESHealthMonitor {
+	private static final long serialVersionUID = -2242583635367813341L;
 	private static final int SERVER_HEALTH_GRACE_PERIOD = 4000;
 	private Map<RemoteHESInstance, Date> liveHESInstances;
 	private Dispatcher dispatcher;
-	private Dashboard dashboard;
+	private transient Dashboard dashboard;
 
-	public HESHealthMonitorImpl(Dispatcher dispatcher, Dashboard dashboard) {
+	public HESHealthMonitorImpl(Dispatcher dispatcher, Dashboard dashboard) throws RemoteException {
 		this.liveHESInstances = new HashMap<RemoteHESInstance, Date>();
 		this.dispatcher = dispatcher;
 		this.dashboard = dashboard;
-	}
-
-	public void run() {
-		while (!isInterrupted()) {
-			try {
-				checkIfNotAlive();
-				sleep(CHECK_SERVER_HEALTH_EVERY_N_MILLISECONDS);
-			} catch (InterruptedException e) {
-			}
-		}
 	}
 
 	@Override
@@ -46,6 +36,7 @@ public class HESHealthMonitorImpl extends Thread implements HESHealthMonitor {
 				hesInstanceHostame, hesInstanceRegistryPort);
 		this.liveHESInstances.put(hesInstance,
 				new Date(System.currentTimeMillis()));
+		Log.log(HESHealthMonitorImpl.class.getName(), "number of registred HES instances: ", "" + liveHESInstances.size());
 		this.dispatcher.iAmAlive(hesInstance);
 		this.dashboard.showNewInstanceState(hesInstanceName, true);
 	}

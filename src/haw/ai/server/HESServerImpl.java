@@ -60,7 +60,8 @@ public class HESServerImpl implements HESServer {
 			hesServer.setRechnungsFassade(RechnungsFassadeImpl.createRechnungsFassade(hesServer));
 			hesServer.setServerController(ServerControllerImpl.createServerController(hesServer));
 		} catch (RemoteException e) {
-		}
+			Log.log(HESServerImpl.class.getName(), hesServer.getInstanceName(), "create", "RemoteException", e.getMessage());
+		}																								
 		return hesServer;
 	}
 
@@ -138,7 +139,9 @@ public class HESServerImpl implements HESServer {
 			try {
 				this.clientRegistry = LocateRegistry.getRegistry(
 						clientRegistryHostname, clientRegistryPort);
+				Log.log(HESServerImpl.class.getName(), getInstanceName(), "getClientRegistry", "success");
 			} catch (RemoteException e) {
+				Log.log(HESServerImpl.class.getName(), getInstanceName(), "getClientRegistry", "RemoteException", e.getMessage());
 			}
 		}
 		return this.clientRegistry;
@@ -155,7 +158,9 @@ public class HESServerImpl implements HESServer {
 						.createRegistry(getServerRegistryPort());
 				Log.log(HESServerImpl.class.getName(), getInstanceName(), "createServerRegistry", getServerRegistryHostname(), "" + getServerRegistryPort());
 			} catch (RemoteException e) {
+				Log.log(HESServerImpl.class.getName(), getInstanceName(), "createServerRegistry", "RemoteException", e.getMessage());
 			} catch (UnknownHostException e) {
+				Log.log(HESServerImpl.class.getName(), getInstanceName(), "createServerRegistry", "UnknownHostException", e.getMessage());
 			}
 		}
 	}
