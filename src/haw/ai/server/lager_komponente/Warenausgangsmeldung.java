@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Warenausgangsmeldung extends HESEntity {
 
+	private static final long serialVersionUID = -1140566318482194099L;
 	@Id
 	@GeneratedValue
 	private int id;

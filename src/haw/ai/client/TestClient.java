@@ -1,7 +1,8 @@
 package haw.ai.client;
 
 import haw.ai.common.Log;
-import haw.ai.server.bestell_komponente.*;
+import haw.ai.server.bestell_komponente.Angebot;
+import haw.ai.server.bestell_komponente.Auftrag;
 import haw.ai.server.common.DateUtil;
 import haw.ai.server.kunden_komponente.Kunde;
 import haw.ai.server.lager_komponente.Produkt;

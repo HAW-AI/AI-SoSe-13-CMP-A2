@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 @Entity
 public class Kunde extends HESEntity {
 
+	private static final long serialVersionUID = -1167036905217328819L;
 	@Id
 	@GeneratedValue
 	private int id;

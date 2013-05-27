@@ -15,6 +15,7 @@ import javax.persistence.OneToOne;
 @Entity
 public class Auftrag extends HESEntity {
 
+	private static final long serialVersionUID = 8721028582622738578L;
 	@Id
 	@GeneratedValue
 	private int id;

@@ -1,14 +1,10 @@
 package haw.ai.client.gui.dashboard;
 
-import java.io.Serializable;
-
 import haw.ai.client.Dispatcher;
-import haw.ai.client.TestClient;
 import haw.ai.common.Log;
-import haw.ai.starter.Client;
 
-public class Dashboard implements Serializable {
-	private static final long serialVersionUID = -232693973283996692L;
+public class Dashboard {
+
 	private Dashboard_GUI gui;
 	private Dispatcher dispatcher;
 
@@ -21,13 +17,13 @@ public class Dashboard implements Serializable {
 
 	// wird vom Monitor aufgerufen, um den Status einer Instanz zu aktualisieren
 	// (ggf. wird ein neuer Listeneintrag in der GUI angelegt, wenn der
-	// Instanzname
-	// noch nicht in der Liste steht)
+	// Instanzname noch nicht in der Liste steht)
 	public void showNewInstanceState(String instanzname, boolean state) {
 		Log.log(Dashboard.class.getName(),
 				"Monitoraufruf showNewInstanceState mit Instanz " + instanzname
 						+ " und Status " + state);
-		this.gui.setProcessState(instanzname, state);
+		// bei diesem Aufruf setzt die GUI die Up-/Downtime neu!
+		this.gui.setInstanceState(instanzname, state);
 	}
 
 	// wird von GUI aufgerufen, wenn Benutzer Instanzen "ON" oder "OFF" schaltet
@@ -36,6 +32,10 @@ public class Dashboard implements Serializable {
 				"GUI-Aufruf changeInstanceState mit Instanz " + instanzname
 						+ " und Status " + state + " wird an den Dispatcher weitergeleitet");
 		this.dispatcher.changeInstanceState(instanzname, state);
+	}
+	
+	public void increaseCount(String instanzname) {
+		gui.increaseCount(instanzname);
 	}
 
 }

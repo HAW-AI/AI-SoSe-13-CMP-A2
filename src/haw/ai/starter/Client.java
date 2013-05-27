@@ -53,6 +53,7 @@ public class Client {
 
 	private void startGui() {
 		dashboard = new Dashboard(dispatcher);
+		dispatcher.setDashboard(dashboard);
 		Log.log(Client.class.getName(), "--- Dashboard gestartet ---");
 	}
 

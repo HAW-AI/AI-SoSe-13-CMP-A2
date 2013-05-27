@@ -1,5 +1,6 @@
 package haw.ai.client;
 
+import haw.ai.client.gui.dashboard.Dashboard;
 import haw.ai.common.Log;
 import haw.ai.server.bestell_komponente.BestellFassade;
 import haw.ai.server.kunden_komponente.KundenFassade;
@@ -14,7 +15,8 @@ import java.util.List;
 public class DispatcherImpl implements Dispatcher {
 
 	// Dokumentation siehe Dispatcher-Interface
-	private static final long serialVersionUID = -2798208426179001168L;
+
+	private Dashboard dashboard;
 	private List<RemoteHESInstance> liveHESInstances;
 	private Registry clientRegistry;
 	private static int i;
@@ -23,6 +25,10 @@ public class DispatcherImpl implements Dispatcher {
 		this.clientRegistry = clientRegistry;
 		this.liveHESInstances = new ArrayList<RemoteHESInstance>();
 		i = 0;
+	}
+
+	public void setDashboard(Dashboard dashboard) {
+		this.dashboard = dashboard;
 	}
 
 	@Override
@@ -47,7 +53,7 @@ public class DispatcherImpl implements Dispatcher {
 	public BestellFassade getBestellFassade() {
 		RemoteHESInstance instance = chooseNextInstance();
 		if (instance != null) {
-			return instance.getBestellFassade();			
+			return instance.getBestellFassade();
 		} else {
 			return null;
 		}
@@ -56,7 +62,7 @@ public class DispatcherImpl implements Dispatcher {
 	public KundenFassade getKundenFassade() {
 		RemoteHESInstance instance = chooseNextInstance();
 		if (instance != null) {
-			return instance.getKundenFassade();			
+			return instance.getKundenFassade();
 		} else {
 			return null;
 		}
@@ -65,7 +71,7 @@ public class DispatcherImpl implements Dispatcher {
 	public LagerFassade getLagerFassade() {
 		RemoteHESInstance instance = chooseNextInstance();
 		if (instance != null) {
-			return instance.getLagerFassade();			
+			return instance.getLagerFassade();
 		} else {
 			return null;
 		}
@@ -74,7 +80,7 @@ public class DispatcherImpl implements Dispatcher {
 	public LieferFassade getLieferFassade() {
 		RemoteHESInstance instance = chooseNextInstance();
 		if (instance != null) {
-			return instance.getLieferFassade();			
+			return instance.getLieferFassade();
 		} else {
 			return null;
 		}
@@ -83,7 +89,7 @@ public class DispatcherImpl implements Dispatcher {
 	public RechnungsFassade getRechnungsFassade() {
 		RemoteHESInstance instance = chooseNextInstance();
 		if (instance != null) {
-			return instance.getRechnungsFassade();			
+			return instance.getRechnungsFassade();
 		} else {
 			return null;
 		}
@@ -99,6 +105,7 @@ public class DispatcherImpl implements Dispatcher {
 			RemoteHESInstance instance = liveHESInstances.get(i);
 			Log.log(DispatcherImpl.class.getName(), "chose: ", instance.getHesInstanceName());
 			i++;
+			dashboard.increaseCount(instance.getHesInstanceName());
 			return instance;
 		} else
 			return null;

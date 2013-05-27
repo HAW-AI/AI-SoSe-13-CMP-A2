@@ -22,6 +22,7 @@ import javax.persistence.OneToOne;
 @Entity
 public class Angebot extends HESEntity {
 
+	private static final long serialVersionUID = 5176239738277043427L;
 	@Id
 	@GeneratedValue
 	private int id;

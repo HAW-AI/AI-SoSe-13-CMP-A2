@@ -1,6 +1,8 @@
 package haw.ai.server.common;
 
-public abstract class HESEntity {
+import java.io.Serializable;
+
+public abstract class HESEntity implements Serializable {
 	public abstract int getId();
 
 	@Override

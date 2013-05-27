@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Zahlungseingang extends HESEntity {
 
+	private static final long serialVersionUID = 6784354188380479099L;
 	@Id
 	@GeneratedValue
 	private int id;

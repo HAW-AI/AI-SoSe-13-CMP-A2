@@ -17,6 +17,7 @@ import javax.persistence.OneToOne;
 @Entity
 public class Rechnung extends HESEntity {
 
+	private static final long serialVersionUID = -5100833633512489076L;
 	@Id
 	@GeneratedValue
 	private int id;
