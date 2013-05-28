@@ -12,8 +12,9 @@ import javax.swing.UIManager;
  * @author Kazura
  */
 public class ProcessListCellRenderer extends JLabel implements ListCellRenderer {
-    
-  @Override
+	private static final long serialVersionUID = 513640262629191397L;
+
+@Override
   public Component getListCellRendererComponent(JList list, Object value,
       int index, boolean isSelected, boolean cellHasFocus) {
 

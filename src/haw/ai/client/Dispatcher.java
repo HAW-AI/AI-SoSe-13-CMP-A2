@@ -9,7 +9,7 @@ import haw.ai.server.rechnungs_komponente.RechnungsFassade;
 
 import java.io.Serializable;
 
-public interface Dispatcher extends Serializable {
+public interface Dispatcher {
 
 	public void setDashboard(Dashboard dashboard);
 	// Dispatcher erhaelt "I Am Alive"-Nachricht vom Monitor

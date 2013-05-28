@@ -117,8 +117,10 @@ public class DispatcherImpl implements Dispatcher {
 				"Aufruf changeInstanceState mit Instanz " + instanzname
 						+ " und Status " + state
 						+ " wird an ServerController weitergeleitet");
+		Log.log(DispatcherImpl.class.getName(), "size of liveinstances: " + liveHESInstances.size());
 		for (RemoteHESInstance instance : liveHESInstances) {
 			if (instance.getHesInstanceName().equals(instanzname)) {
+				Log.log(DispatcherImpl.class.getName(), "name of instance::: " + instance.getHesInstanceName());
 				instance.getServerController().changeInstanceState(state);
 			}
 		}

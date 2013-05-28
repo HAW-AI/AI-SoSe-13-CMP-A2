@@ -10,7 +10,7 @@ public class Server {
 	private static HESServer hesServer;
 
 	public static void main(String[] args) throws RemoteException {
-		hesServer = HESServerImpl.create("localhost", 1099);
+		hesServer = HESServerImpl.create("localhost", 1099, args[0]);
 		Log.log(HESServer.class.getName(), "HESServer started");
 	}
 }

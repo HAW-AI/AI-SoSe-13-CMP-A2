@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class HESHealthMonitorImpl extends UnicastRemoteObject implements HESHealthMonitor {
 	private static final long serialVersionUID = -2242583635367813341L;
-	private static final int SERVER_HEALTH_GRACE_PERIOD = 4000;
+	private static final int SERVER_HEALTH_GRACE_PERIOD_IN_SECONDS = 4;
 	private Map<RemoteHESInstance, Date> liveHESInstances;
 	private Dispatcher dispatcher;
 	private transient Dashboard dashboard;
@@ -47,7 +47,7 @@ public class HESHealthMonitorImpl extends UnicastRemoteObject implements HESHeal
 		Map<RemoteHESInstance, Date> actuallyLiveHESInstances = getLiveHESInstances();
 		for (RemoteHESInstance hesInstance : actuallyLiveHESInstances.keySet()) {
 			if (((new Date(System.currentTimeMillis()).getTime() - actuallyLiveHESInstances
-					.get(hesInstance).getTime()) / 1000) > SERVER_HEALTH_GRACE_PERIOD) {
+					.get(hesInstance).getTime()) / 1000) > SERVER_HEALTH_GRACE_PERIOD_IN_SECONDS) {
 				actuallyLiveHESInstances.remove(hesInstance);
 				this.dispatcher.iAmNotAlive(hesInstance);
 				this.dashboard.showNewInstanceState(

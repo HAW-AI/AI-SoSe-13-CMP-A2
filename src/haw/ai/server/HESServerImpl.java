@@ -38,18 +38,20 @@ public class HESServerImpl implements HESServer {
 	private Registry clientRegistry = null;
 	private Registry serverRegistry = null;
 
-	public HESServerImpl(String clientRegistryHostname, Integer clientRegistryPort) {
+	public HESServerImpl(String clientRegistryHostname, Integer clientRegistryPort, Integer serverRegistryPort) {
 		this.setInstanceName(UUID.randomUUID().toString());
 		this.clientRegistryHostname = clientRegistryHostname;
 		this.clientRegistryPort = clientRegistryPort;
+		this.serverRegistryPort = serverRegistryPort;
 		createServerRegistry();
 		
 	}
 
 	public static HESServer create(String clientRegistryHostname,
-			Integer clientRegistryPort) {
+			Integer clientRegistryPort, String serverRegistryPort) {
+		Integer serverRegistryPortFromString = Integer.valueOf(serverRegistryPort);
 		HESServerImpl hesServer = new HESServerImpl(clientRegistryHostname,
-				clientRegistryPort);
+				clientRegistryPort, serverRegistryPortFromString);
 
 		try {
 			Log.log(HESServerImpl.class.getName(), hesServer.getInstanceName(), "create", "setzen aller Fassaden");
@@ -153,7 +155,6 @@ public class HESServerImpl implements HESServer {
 			try {
 				this.serverRegistryHostname = InetAddress.getLocalHost()
 						.getHostName();
-				this.serverRegistryPort = REGISTRY_PORT;
 				this.serverRegistry = LocateRegistry
 						.createRegistry(getServerRegistryPort());
 				Log.log(HESServerImpl.class.getName(), getInstanceName(), "createServerRegistry", getServerRegistryHostname(), "" + getServerRegistryPort());

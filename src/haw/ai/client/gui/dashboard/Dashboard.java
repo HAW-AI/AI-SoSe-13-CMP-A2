@@ -10,8 +10,6 @@ public class Dashboard {
 
 	public Dashboard(Dispatcher dispatcher) {
 		this.dispatcher = dispatcher;
-		this.gui = new Dashboard_GUI(this);
-		this.gui.setVisible(true);
 		Log.log(Dashboard.class.getName(), "--- Dashboard-GUI gestartet ---");
 	}
 
@@ -38,6 +36,17 @@ public class Dashboard {
 	// erhoehe Serviceanfragen dieser Instanz um 1
 	public void increaseCount(String instanzname) {
 		gui.increaseCount(instanzname);
+	}
+	
+	public static Dashboard create(Dispatcher dispatcher) {
+		Dashboard dashboard = new Dashboard(dispatcher);
+		dashboard.setGui(new Dashboard_GUI(dashboard));
+		return dashboard;
+	}
+
+	private void setGui(Dashboard_GUI dashboard_GUI) {
+		this.gui = dashboard_GUI;
+		this.gui.setVisible(true);
 	}
 
 }

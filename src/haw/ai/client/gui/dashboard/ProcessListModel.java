@@ -13,8 +13,8 @@ import javax.swing.AbstractListModel;
  * @author Kazura
  */
 public class ProcessListModel extends AbstractListModel {
-
-    private static List<HESInstanceState> processlist = new ArrayList<HESInstanceState>();
+	private static final long serialVersionUID = -3790156122084633541L;
+	private List<HESInstanceState> processlist;
     
     public void add(HESInstanceState h) {
        processlist.add(h);
@@ -22,11 +22,7 @@ public class ProcessListModel extends AbstractListModel {
     }
 
     public ProcessListModel(){
-        generateList();
-    }
-    
-    private static List<HESInstanceState> generateList() {
-        return processlist;
+    	this.processlist = new ArrayList<HESInstanceState>();
     }
     
     public List<HESInstanceState> getList() {
@@ -64,5 +60,4 @@ public class ProcessListModel extends AbstractListModel {
     public int getIndex(HESInstanceState r) {
         return processlist.indexOf(r);
     }
-
 }
