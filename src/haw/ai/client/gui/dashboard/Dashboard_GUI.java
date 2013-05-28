@@ -301,6 +301,11 @@ public class Dashboard_GUI extends javax.swing.JFrame {
 //		if (!changeStateButton.isEnabled())
 //			changeStateButton.setEnabled(true);
 //
+		 /* 
+		  * you cant just do this. what if nothing is selected in the process list.
+		  * then you end up with null pointer exceptions which is probably what our problem is.
+		  * 
+		  */
 //		HESInstanceState instanz = (HESInstanceState) processList
 //				.getSelectedValue();
 //		instanceNameLabel.setText(instanz.getName());
