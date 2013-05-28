@@ -50,7 +50,7 @@ public class HESHealthMonitorImpl extends UnicastRemoteObject implements HESHeal
 					.get(hesInstance).getTime()) / 1000) > SERVER_HEALTH_GRACE_PERIOD) {
 				actuallyLiveHESInstances.remove(hesInstance);
 				this.dispatcher.iAmNotAlive(hesInstance);
-				this.dashboard.changeInstanceState(
+				this.dashboard.showNewInstanceState(
 						hesInstance.getHesInstanceName(), false);
 			}
 		}
