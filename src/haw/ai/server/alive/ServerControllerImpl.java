@@ -25,7 +25,6 @@ public class ServerControllerImpl extends UnicastRemoteObject implements ServerC
 		return serverController;
 	}
 	
-	// wird vom Dispatcher aufgerufen, um eine HES-Instanz online/offline zu schalten
 	public void changeInstanceState(boolean state) {
 		Log.log(ServerControllerImpl.class.getName(), server.getInstanceName(), "changeInstanceState", "" + state);
 		if (state == false) {

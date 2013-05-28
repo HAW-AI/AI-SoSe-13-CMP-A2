@@ -34,6 +34,8 @@ public class Dashboard {
 		this.dispatcher.changeInstanceState(instanzname, state);
 	}
 	
+	// wird von Dispatcher aufgerufen, wenn eine Serviceanfrage an diese Instanz gestellt wird
+	// erhoehe Serviceanfragen dieser Instanz um 1
 	public void increaseCount(String instanzname) {
 		gui.increaseCount(instanzname);
 	}

@@ -13,11 +13,17 @@ public interface Dispatcher extends Serializable {
 
 	public void setDashboard(Dashboard dashboard);
 	// Dispatcher erhaelt "I Am Alive"-Nachricht vom Monitor
+	// Instanz wird in die Liste aller lebenden Instanzen eingetragen
 	public void iAmAlive(RemoteHESInstance hesInstance);
 	// Dispatcher erhaelt "I Am Not Alive"-Nachricht vom Monitor
+	// Instanz wird aus der Liste aller lebenden Instanzen geloescht
 	public void iAmNotAlive(RemoteHESInstance hesInstance);
 	// Zustand eines HES-Prozesses aendern, wird vom Dashboard aufgerufen
+	// Befehl des Umschaltens auf ON oder OFF wird an ServerController weitergeleitet
 	public void changeInstanceState(String instanzname, boolean state);
+	
+	// sucht nach Round-Robin die naechste Instanz aus und holt die gewuenschte Fassade
+	// dieser Instanz aus der Registry
 	public BestellFassade getBestellFassade();
 	public KundenFassade getKundenFassade();
 	public LagerFassade getLagerFassade();

@@ -13,6 +13,11 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
+/*  Klasse zur Darstellung der externen Objektreferenz einer HES-Instanz.
+ *  Traegt den gleichen Namen (hesInstanceName) wie die entfernte HES-Instanz
+ *  Holt entsprechende Fassaden der HES-Instanz aus der Registry und gibt sie zurueck
+ */
+
 public class RemoteHESInstance {
 	private String hesInstanceName;
 	private String hesInstanceHostame;
