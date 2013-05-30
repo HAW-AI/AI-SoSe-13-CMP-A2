@@ -66,13 +66,13 @@
 		</manifestclasspath>
 		<jar destfile="${dist.dir}/client.jar" basedir="${build.main.dir}">
 			<manifest>
-				<attribute name="Main-Class" value="haw.ai.starter.Client" />
+				<attribute name="Main-Class" value="haw.ai.starter.ClientStarter" />
 				<attribute name="Class-Path" value="${lib.list}" />
 			</manifest>
 		</jar>
 		<jar destfile="${dist.dir}/server.jar" basedir="${build.main.dir}">
 			<manifest>
-				<attribute name="Main-Class" value="haw.ai.starter.Server" />
+				<attribute name="Main-Class" value="haw.ai.starter.ServerStarter" />
 				<attribute name="Class-Path" value="${lib.list}" />
 			</manifest>
 		</jar>

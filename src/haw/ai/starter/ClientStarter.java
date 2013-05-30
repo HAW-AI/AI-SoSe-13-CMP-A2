@@ -12,7 +12,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-public class Client {
+public class ClientStarter {
 	public final static String CLIENT_REGISTRY_HOST = "localhost";
 	public final static Integer CLIENT_REGISTRY_PORT = 1099;
 	private Registry registry;
@@ -21,18 +21,18 @@ public class Client {
 	private Dashboard dashboard;
 
 	public static void main(String[] args) {
-		Client client = new Client();
+		ClientStarter clientStarter = new ClientStarter();
 		try {
-			client.startRegistry();
-			client.startDispatcher();
-			client.startGui();
-			client.startMonitor();
-			client.startTestClient();
-			client.logEverythingInitialized();
+			clientStarter.startRegistry();
+			clientStarter.startDispatcher();
+			clientStarter.startGui();
+			clientStarter.startMonitor();
+			clientStarter.startTestClient();
+			clientStarter.logEverythingInitialized();
 		} catch (AccessException e) {
-			Log.log(Client.class.getName(), "main", "AccessException", e.getMessage());
+			Log.log(ClientStarter.class.getName(), "main", "AccessException", e.getMessage());
 		} catch (RemoteException e) {
-			Log.log(Client.class.getName(), "main", "RemoteException", e.getMessage());
+			Log.log(ClientStarter.class.getName(), "main", "RemoteException", e.getMessage());
 		}
 	}
 
@@ -41,43 +41,43 @@ public class Client {
 			// create on port 1099
 			this.registry = LocateRegistry.createRegistry(1099);
 		} catch (Exception e) {
-			Log.log(Client.class.getName(), "startRegistry", "Exception", e.getMessage());
+			Log.log(ClientStarter.class.getName(), "startRegistry", "Exception", e.getMessage());
 		}
 	}
 
 	private void startDispatcher() {
 		// The Dispatcher starts a new server process if non exists.
 		this.dispatcher = new DispatcherImpl(registry);
-		Log.log(Client.class.getName(), "--- Dispatcher gestartet ---");
+		Log.log(ClientStarter.class.getName(), "--- Dispatcher gestartet ---");
 	}
 
 	private void startGui() {
 		this.dashboard = Dashboard.create(dispatcher);
 		this.dispatcher.setDashboard(dashboard);
-		Log.log(Client.class.getName(), "--- Dashboard gestartet ---");
+		Log.log(ClientStarter.class.getName(), "--- Dashboard gestartet ---");
 	}
 
 	private void startMonitor() throws AccessException, RemoteException {
 		this.hesMonitor = new HESHealthMonitorThread(dispatcher, dashboard, registry);
 		((Thread) hesMonitor).start();
-		Log.log(Client.class.getName(), "--- Monitor gestartet ---");
+		Log.log(ClientStarter.class.getName(), "--- Monitor gestartet ---");
 	}
 
 	private void startTestClient() {
 		try {
 			TestClient test = new TestClient(dispatcher);
-			Log.log(Client.class.getName(), "--- TestClient gestartet ---");
+			Log.log(ClientStarter.class.getName(), "--- TestClient gestartet ---");
 			Thread.sleep(10000);
 			test.test();
 		} catch (InterruptedException e) {
-			Log.log(Client.class.getName(), "startTestClient", "InterruptedException", e.getMessage());
+			Log.log(ClientStarter.class.getName(), "startTestClient", "InterruptedException", e.getMessage());
 		}
 	}
 	
 	private void logEverythingInitialized() {
-		Log.log(Client.class.getSimpleName(), "registry not null: " + (registry  != null));
-		Log.log(Client.class.getSimpleName(), "dispatcher not null: " + (dispatcher  != null));
-		Log.log(Client.class.getSimpleName(), "hesmonitor not null: " + (hesMonitor  != null));
-		Log.log(Client.class.getSimpleName(), "dashboard not null: " + (dashboard != null));
+		Log.log(ClientStarter.class.getSimpleName(), "registry not null: " + (registry  != null));
+		Log.log(ClientStarter.class.getSimpleName(), "dispatcher not null: " + (dispatcher  != null));
+		Log.log(ClientStarter.class.getSimpleName(), "hesmonitor not null: " + (hesMonitor  != null));
+		Log.log(ClientStarter.class.getSimpleName(), "dashboard not null: " + (dashboard != null));
 	}
 }

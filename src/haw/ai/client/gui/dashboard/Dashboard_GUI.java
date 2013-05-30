@@ -238,86 +238,90 @@ public class Dashboard_GUI extends javax.swing.JFrame {
 			}
 		}
 		
-		this.processListValueChanged();
+//		this.processListValueChanged();
 	}
 
 	// setze Status der Instanz mit "instanzname" neu
 	// hier wird auch die aktuelle Up- und Downtime neu berechnet
 	public void setInstanceState(String instanzname, boolean state) {
-//		ProcessListModel model = (ProcessListModel) processList.getModel();
-//
-//		HESInstanceState instanz_in_liste = null;
-//		boolean neue_instanz = true;
-//		
-//		for (int i = 0; i < model.getSize(); i++) {
-//			instanz_in_liste = (HESInstanceState) model.getElementAt(i);
-//			if (instanzname.equals(instanz_in_liste.getName())) {
-//				neue_instanz = false;
-//				break;
-//			}
-//		}
-//		
-//		// Up-/Downtime berechnen, wenn Instanz bereits in der Liste stand
-//		if (!neue_instanz) {
-//			// Status war ON, wird auf ON gesetzt (Uptime neu berechnen)
-//			if (instanz_in_liste.getState() == true && state == true) {
-//				long current = System.currentTimeMillis();
-//				long old = instanz_in_liste.getUptime();
-//				instanz_in_liste.setUptime(old + (current-old));
-//			}
-//			// Status war OFF, wird auf ON gesetzt (Downtime neu berechnen und Status ändern)
-//			if (instanz_in_liste.getState() == false && state == true) {
-//				long current = System.currentTimeMillis();
-//				long old = instanz_in_liste.getDowntime();
-//				instanz_in_liste.setDowntime(old + (current-old));
-//				instanz_in_liste.setState(state);
-//			}
-//			// Status war ON, wird auf OFF gesetzt (Uptime neu berechnen und Status ändern)
-//			if (instanz_in_liste.getState() == true && state == false) {
-//				long current = System.currentTimeMillis();
-//				long old = instanz_in_liste.getUptime();
-//				instanz_in_liste.setUptime(old + (current-old));
-//				instanz_in_liste.setState(state);
-//			}
-//			// Status war OFF, wird auf OFF gesetzt (Downtime neu berechnen)
-//			if (instanz_in_liste.getState() == false && state == false) {
-//				long current = System.currentTimeMillis();
-//				long old = instanz_in_liste.getDowntime();
-//				instanz_in_liste.setDowntime(old + (current-old));
-//			}
-//		}
-//		
-//		// wenn neue Instanz, einfach in die Liste eintragen
-//		if (neue_instanz) {
-//			HESInstanceState instanz = new HESInstanceState(instanzname, state);
-//			model.add(instanz);
-//		}
-//		
-//		this.processListValueChanged();
+		ProcessListModel model = (ProcessListModel) processList.getModel();
+
+		HESInstanceState instanz_in_liste = null;
+		boolean neue_instanz = true;
+		
+		for (int i = 0; i < model.getSize(); i++) {
+			instanz_in_liste = (HESInstanceState) model.getElementAt(i);
+			if (instanzname.equals(instanz_in_liste.getName())) {
+				neue_instanz = false;
+				break;
+			}
+		}
+		
+		// Up-/Downtime berechnen, wenn Instanz bereits in der Liste stand
+		if (!neue_instanz) {
+			// Status war ON, wird auf ON gesetzt (Uptime neu berechnen)
+			if (instanz_in_liste.getState() == true && state == true) {
+				long current = System.currentTimeMillis();
+				long old = instanz_in_liste.getUptime();
+				instanz_in_liste.setUptime(old + (current-old));
+				instanz_in_liste.setUptime_diff(instanz_in_liste.getUptime_diff() + (current-old));
+			}
+			// Status war OFF, wird auf ON gesetzt (Downtime neu berechnen und Status ändern)
+			if (instanz_in_liste.getState() == false && state == true) {
+				long current = System.currentTimeMillis();
+				long old = instanz_in_liste.getDowntime();
+				instanz_in_liste.setDowntime(old + (current-old));
+				instanz_in_liste.setDowntime_diff(instanz_in_liste.getDowntime_diff() + (current-old));
+				instanz_in_liste.setState(state);
+			}
+			// Status war ON, wird auf OFF gesetzt (Uptime neu berechnen und Status ändern)
+			if (instanz_in_liste.getState() == true && state == false) {
+				long current = System.currentTimeMillis();
+				long old = instanz_in_liste.getUptime();
+				instanz_in_liste.setUptime(old + (current-old));
+				instanz_in_liste.setUptime_diff(instanz_in_liste.getUptime_diff() + (current-old));
+				instanz_in_liste.setState(state);
+			}
+			// Status war OFF, wird auf OFF gesetzt (Downtime neu berechnen)
+			if (instanz_in_liste.getState() == false && state == false) {
+				long current = System.currentTimeMillis();
+				long old = instanz_in_liste.getDowntime();
+				instanz_in_liste.setDowntime_diff(instanz_in_liste.getDowntime_diff() + (current-old));
+				instanz_in_liste.setDowntime(old + (current-old));
+			}
+		}
+		
+		// wenn neue Instanz, einfach in die Liste eintragen
+		if (neue_instanz) {
+			HESInstanceState instanz = new HESInstanceState(instanzname, state);
+			model.add(instanz);
+		}
+		
+		if (processList.isSelectionEmpty() && processList.getModel().getSize() > 0) {
+			processList.setSelectedIndex(0);
+			this.processListValueChanged();
+		} else {
+			this.processListValueChanged();
+		}
 	}
 
 	// Eintrag in der Liste wird selektiert, Daten der Instanz neu anzeigen
 	private void processListValueChanged() {// GEN-FIRST:event_processListValueChanged
-//		if (!changeStateButton.isEnabled())
-//			changeStateButton.setEnabled(true);
-//
-		 /* 
-		  * you cant just do this. what if nothing is selected in the process list.
-		  * then you end up with null pointer exceptions which is probably what our problem is.
-		  * 
-		  */
-//		HESInstanceState instanz = (HESInstanceState) processList
-//				.getSelectedValue();
-//		instanceNameLabel.setText(instanz.getName());
-//		changeStateButton.setSelected(instanz.getState());
-//		uptimeLabel.setText(instanz.getUptime() + "");
-//		downtimeLabel.setText(instanz.getDowntime() + "");
-//		countLabel.setText(instanz.getCount() + "");
-//
-//		if (changeStateButton.isSelected())
-//			changeStateButton.setText("ON");
-//		else
-//			changeStateButton.setText("OFF");
+		if (!changeStateButton.isEnabled())
+			changeStateButton.setEnabled(true);
+
+		HESInstanceState instanz = (HESInstanceState) processList
+				.getSelectedValue();
+		instanceNameLabel.setText(instanz.getName());
+		changeStateButton.setSelected(instanz.getState());
+		uptimeLabel.setText(instanz.getUptime_diff() + "");
+		downtimeLabel.setText(instanz.getDowntime_diff() + "");
+		countLabel.setText(instanz.getCount() + "");
+
+		if (changeStateButton.isSelected())
+			changeStateButton.setText("ON");
+		else
+			changeStateButton.setText("OFF");
 	}// GEN-LAST:event_processListValueChanged
 
 	// Togglebutton (ON/OFF) wurde geklickt, Status der Instanz muss geändert werden
@@ -330,15 +334,23 @@ public class Dashboard_GUI extends javax.swing.JFrame {
 			changeStateButton.setText("ON");
 			this.setInstanceState(instanz.getName(), true);
 			this.dashboard.changeInstanceState(instanz.getName(), true);
-			processList.setSelectedValue(instanz, rootPaneCheckingEnabled);
-			this.processListValueChanged();
+			if (processList.isSelectionEmpty() && processList.getModel().getSize() > 0) {
+				processList.setSelectedIndex(0);
+				this.processListValueChanged();
+			} else {
+				this.processListValueChanged();
+			}
 		} else {
 			changeStateButton.setSelected(false);
 			changeStateButton.setText("OFF");
 			this.setInstanceState(instanz.getName(), false);
 			this.dashboard.changeInstanceState(instanz.getName(), false);
-			processList.setSelectedValue(instanz, rootPaneCheckingEnabled);
-			this.processListValueChanged();
+			if (processList.isSelectionEmpty() && processList.getModel().getSize() > 0) {
+				processList.setSelectedIndex(0);
+				this.processListValueChanged();
+			} else {
+				this.processListValueChanged();
+			}
 		}
 	}// GEN-LAST:event_changeStateButtonActionPerformed
 

@@ -18,7 +18,7 @@ public class HibernateUtil {
 			File confFile = new File(ABS_PATH_TO_CONFIG+File.separator+"hibernate.cfg.xml");
 			Configuration conf = new Configuration().configure(confFile.getAbsoluteFile());
 			SchemaExport schema = new SchemaExport(conf);
-			schema.create(true, true);
+			schema.create(false, true);
 			return conf.buildSessionFactory();
 		} catch (Throwable e) {
 			System.err.println("SessionFactory creation failed." + e);

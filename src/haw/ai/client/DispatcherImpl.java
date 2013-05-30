@@ -8,6 +8,7 @@ import haw.ai.server.lager_komponente.LagerFassade;
 import haw.ai.server.liefer_komponente.LieferFassade;
 import haw.ai.server.rechnungs_komponente.RechnungsFassade;
 
+import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.List;
@@ -121,7 +122,11 @@ public class DispatcherImpl implements Dispatcher {
 		for (RemoteHESInstance instance : liveHESInstances) {
 			if (instance.getHesInstanceName().equals(instanzname)) {
 				Log.log(DispatcherImpl.class.getName(), "name of instance::: " + instance.getHesInstanceName());
-				instance.getServerController().changeInstanceState(state);
+				try {
+					instance.getServerController().changeInstanceState(state);
+				} catch (RemoteException e) {
+					Log.log(DispatcherImpl.class.getName(), "changeInstanceState", "couldnt get ServerController");
+				}
 			}
 		}
 	}

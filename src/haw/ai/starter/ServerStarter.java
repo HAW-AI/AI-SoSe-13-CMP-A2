@@ -6,7 +6,7 @@ import haw.ai.server.HESServerImpl;
 
 import java.rmi.RemoteException;
 
-public class Server {
+public class ServerStarter {
 	private static HESServer hesServer;
 
 	public static void main(String[] args) throws RemoteException {

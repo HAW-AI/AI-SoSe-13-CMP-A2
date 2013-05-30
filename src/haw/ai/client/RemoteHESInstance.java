@@ -1,5 +1,6 @@
 package haw.ai.client;
 
+import haw.ai.server.alive.ServerController;
 import haw.ai.server.alive.ServerControllerImpl;
 import haw.ai.server.bestell_komponente.BestellFassade;
 import haw.ai.server.kunden_komponente.KundenFassade;
@@ -36,10 +37,10 @@ public class RemoteHESInstance {
 		return hesInstanceName;
 	}
 	
-	public ServerControllerImpl getServerController() {
-		ServerControllerImpl serverController = null;
+	public ServerController getServerController() {
+		ServerController serverController = null;
 		try {
-			serverController = (ServerControllerImpl) registry.lookup(ServerControllerImpl.class.getSimpleName());
+			serverController = (ServerController) registry.lookup(ServerController.class.getSimpleName());
 		} catch (AccessException e) {
 		} catch (RemoteException e) {
 		} catch (NotBoundException e) {

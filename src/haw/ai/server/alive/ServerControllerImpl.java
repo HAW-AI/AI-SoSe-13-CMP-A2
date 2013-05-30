@@ -35,6 +35,7 @@ public class ServerControllerImpl extends UnicastRemoteObject implements ServerC
 			if (!this.beacon.isAlive()) {
 				Log.log(ServerControllerImpl.class.getName(), server.getInstanceName(), "changeInstanceState", "starting new beacon");
 				this.beacon = new AliveBeacon(this.server);
+				this.beacon.start();
 			}
 		}
 	}

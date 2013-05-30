@@ -5,14 +5,18 @@ public class HESInstanceState {
     private String name;
     private boolean state;
     private long uptime;
+    private long uptime_diff;
     private long downtime;
+    private long downtime_diff;
     private int count;
     
     public HESInstanceState(String name, boolean state) {
         this.name = name;
         this.state = state;
-        this.uptime = 0;
-        this.downtime = 0;
+        this.uptime = System.currentTimeMillis();
+        this.uptime_diff = 0;
+        this.downtime = System.currentTimeMillis();
+        this.downtime_diff = 0;
         this.count = 0;
     }
     
@@ -56,5 +60,21 @@ public class HESInstanceState {
     public String toString() {
         return this.name;
     }
+
+	public long getUptime_diff() {
+		return uptime_diff;
+	}
+
+	public void setUptime_diff(long uptime_diff) {
+		this.uptime_diff = uptime_diff;
+	}
+
+	public long getDowntime_diff() {
+		return downtime_diff;
+	}
+
+	public void setDowntime_diff(long downtime_diff) {
+		this.downtime_diff = downtime_diff;
+	}
     
 }
