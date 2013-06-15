@@ -12,9 +12,11 @@ public class LieferFassadeImpl extends UnicastRemoteObject implements LieferFass
 	
 	private static final long serialVersionUID = -691970946398847320L;
 	private HESServerImpl hesServer;
+	private LieferBusinessLogik lieferBusinessLogik;
 	
 	private LieferFassadeImpl(HESServerImpl hesServer) throws RemoteException {
 		this.hesServer = hesServer;
+		this.lieferBusinessLogik = new LieferBusinessLogik(hesServer);
 	}
 
 	public Lieferung erstelleLieferung(Auftrag auftrag) {
@@ -26,16 +28,18 @@ public class LieferFassadeImpl extends UnicastRemoteObject implements LieferFass
 			Lieferung lieferung, Date ausgangsDatum, boolean lieferungErfolgt,
 			Date lieferDatum, String transportDienstleister) {
 		Log.log(LieferFassadeImpl.class.getName(), hesServer.getInstanceName(), "erstelleTransportauftrag");
-		return LieferRepository.erstelleTransportauftrag(lieferung,
+		Transportauftrag transportauftrag = LieferRepository.erstelleTransportauftrag(lieferung,
 				ausgangsDatum, lieferungErfolgt, lieferDatum,
 				transportDienstleister);
+		lieferBusinessLogik.transportAuftragAnTransportDienstleister(transportauftrag);
+		return transportauftrag;
 	}
 
 	public void markiereTransportErfolgt(
 			Transportauftrag transportAuftrag) {
 		if (transportAuftrag != null) {
 			Log.log(LieferFassadeImpl.class.getName(), hesServer.getInstanceName(), "markiereTransportErfolgt");
-			LieferBusinessLogik.lieferungErfolgt(transportAuftrag);
+			this.lieferBusinessLogik.lieferungErfolgt(transportAuftrag);
 		}
 	}
 

@@ -29,12 +29,10 @@ public class ProcessListModel extends AbstractListModel {
         return processlist;
     }
     
-    @Override
     public int getSize() {
         return processlist.size();
     }
     
-    @Override
     public Object getElementAt(int index) {
         return processlist.get(index);
     }

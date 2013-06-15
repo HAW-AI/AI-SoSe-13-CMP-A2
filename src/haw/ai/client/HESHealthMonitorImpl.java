@@ -22,12 +22,10 @@ public class HESHealthMonitorImpl extends UnicastRemoteObject implements HESHeal
 		this.dashboard = dashboard;
 	}
 
-	@Override
 	public Map<RemoteHESInstance, Date> getLiveHESInstances() {
 		return new HashMap<RemoteHESInstance, Date>(liveHESInstances);
 	}
 
-	@Override
 	public void iAmAlive(String hesInstanceName, String hesInstanceHostame,
 			Integer hesInstanceRegistryPort) throws RemoteException {
 		Log.log(HESHealthMonitorImpl.class.getName(),

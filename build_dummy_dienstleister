@@ -1,0 +1,4 @@
+rm pom.xml
+ln poms/dummy_dienstleister.xml pom.xml
+mvn clean install
+mv target/*.jar jars/

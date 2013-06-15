@@ -32,7 +32,6 @@ public class DispatcherImpl implements Dispatcher {
 		this.dashboard = dashboard;
 	}
 
-	@Override
 	public void iAmAlive(RemoteHESInstance hesInstance) {
 		if (!liveHESInstances.contains(hesInstance)) {
 			liveHESInstances.add(hesInstance);
@@ -42,7 +41,6 @@ public class DispatcherImpl implements Dispatcher {
 						+ hesInstance.getHesInstanceName());
 	}
 
-	@Override
 	public void iAmNotAlive(RemoteHESInstance hesInstance) {
 		if (liveHESInstances.contains(hesInstance)) {
 			liveHESInstances.remove(hesInstance);
@@ -112,7 +110,6 @@ public class DispatcherImpl implements Dispatcher {
 			return null;
 	}
 
-	@Override
 	public void changeInstanceState(String instanzname, boolean state) {
 		Log.log(DispatcherImpl.class.getName(),
 				"Aufruf changeInstanceState mit Instanz " + instanzname

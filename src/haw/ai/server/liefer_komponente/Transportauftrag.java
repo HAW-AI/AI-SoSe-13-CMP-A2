@@ -1,6 +1,7 @@
 package haw.ai.server.liefer_komponente;
 
 import haw.ai.server.common.HESEntity;
+import haw.ai.transport_message_protocol.TransportauftragJSON;
 
 import java.util.Date;
 
@@ -106,4 +107,8 @@ public class Transportauftrag extends HESEntity {
 		}
 	}
 
+	public TransportauftragJSON toTransportauftragJSON() {
+		return new TransportauftragJSON(this.id, this.ausgangsDatum,
+				this.lieferungErfolgt, this.lieferDatum);
+	}
 }
