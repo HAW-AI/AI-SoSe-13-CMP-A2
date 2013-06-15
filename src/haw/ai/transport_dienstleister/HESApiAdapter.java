@@ -1,6 +1,6 @@
 package haw.ai.transport_dienstleister;
 
-import haw.ai.hes_rest_konnektor.HESRestApi;
+import haw.ai.server.hes_rest_konnektor.HESRestApi;
 import haw.ai.server.liefer_komponente.Transportauftrag;
 import haw.ai.transport_message_protocol.TransportauftragJSON;
 import retrofit.RestAdapter;

@@ -1,4 +1,4 @@
-package haw.ai.hes_rest_konnektor;
+package haw.ai.server.hes_rest_konnektor;
 
 import haw.ai.transport_message_protocol.TransportauftragJSON;
 import retrofit.http.Body;

@@ -20,4 +20,5 @@ public interface LieferFassade extends KomponentenFassade, Remote {
 	public void markiereTransportErfolgt(Transportauftrag transportAuftrag) throws RemoteException;
 	public void save(Lieferung lieferung) throws RemoteException;
 	public void save(Transportauftrag transportauftrag) throws RemoteException;
+	public Transportauftrag findTransportauftrag(int transportauftragId);
 }

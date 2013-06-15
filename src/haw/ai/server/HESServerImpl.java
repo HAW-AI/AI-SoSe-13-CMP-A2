@@ -5,6 +5,7 @@ import haw.ai.server.alive.ServerController;
 import haw.ai.server.alive.ServerControllerImpl;
 import haw.ai.server.bestell_komponente.BestellFassade;
 import haw.ai.server.bestell_komponente.BestellFassadeImpl;
+import haw.ai.server.hes_rest_konnektor.HESRestKonnektor;
 import haw.ai.server.kunden_komponente.KundenFassade;
 import haw.ai.server.kunden_komponente.KundenFassadeImpl;
 import haw.ai.server.lager_komponente.LagerFassade;
@@ -14,6 +15,7 @@ import haw.ai.server.liefer_komponente.LieferFassadeImpl;
 import haw.ai.server.rechnungs_komponente.RechnungsFassade;
 import haw.ai.server.rechnungs_komponente.RechnungsFassadeImpl;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.rmi.RemoteException;
@@ -37,34 +39,54 @@ public class HESServerImpl implements HESServer {
 	public final Integer clientRegistryPort;
 	private Registry clientRegistry = null;
 	private Registry serverRegistry = null;
+	private Integer hesRestServerPort;
+	private HESRestKonnektor hesRestKonnektor;
+	private static HESServerImpl hesServer;
 
-	public HESServerImpl(String clientRegistryHostname, Integer clientRegistryPort, Integer serverRegistryPort) {
+	public HESServerImpl(String clientRegistryHostname, Integer clientRegistryPort, Integer serverRegistryPort, Integer hesRestServerPort) {
 		this.setInstanceName(UUID.randomUUID().toString());
 		this.clientRegistryHostname = clientRegistryHostname;
 		this.clientRegistryPort = clientRegistryPort;
 		this.serverRegistryPort = serverRegistryPort;
+		this.hesRestServerPort = hesRestServerPort;
 		createServerRegistry();
-		
 	}
 
-	public static HESServer create(String clientRegistryHostname,
-			Integer clientRegistryPort, String serverRegistryPort) {
-		Integer serverRegistryPortFromString = Integer.valueOf(serverRegistryPort);
-		HESServerImpl hesServer = new HESServerImpl(clientRegistryHostname,
-				clientRegistryPort, serverRegistryPortFromString);
+	public static HESServer getInstance(String clientRegistryHostname,
+			Integer clientRegistryPort, String serverRegistryPort, String hesRestServerPort) {
+		if (hesServer == null) {
+			Integer serverRegistryPortFromString = Integer.valueOf(serverRegistryPort);
+			Integer hesRestServerPortFromString = Integer.valueOf(hesRestServerPort);
+			HESServerImpl hesServer = new HESServerImpl(clientRegistryHostname,
+					clientRegistryPort, serverRegistryPortFromString, hesRestServerPortFromString);
+	
+			try {
+				Log.log(HESServerImpl.class.getName(), hesServer.getInstanceName(), "create", "setzen aller Fassaden");
+				hesServer.setBestellFassade(BestellFassadeImpl.createBestellFassade(hesServer));
+				hesServer.setKundenFassade(KundenFassadeImpl.createKundenFassade(hesServer));
+				hesServer.setLagerFassade(LagerFassadeImpl.createLagerFassade(hesServer));
+				hesServer.setLieferFassade(LieferFassadeImpl.createLieferFassade(hesServer));
+				hesServer.setRechnungsFassade(RechnungsFassadeImpl.createRechnungsFassade(hesServer));
+				hesServer.setServerController(ServerControllerImpl.createServerController(hesServer));
+				hesServer.setHesRestServer(new HESRestKonnektor(hesServer.hesRestServerPort));
+			} catch (RemoteException e) {
+				Log.log(HESServerImpl.class.getName(), hesServer.getInstanceName(), "create", "RemoteException", e.getMessage());
+			} catch (IllegalArgumentException e) {
+				Log.log(HESServerImpl.class.getName(), hesServer.getInstanceName(), "create", "IllegalArgumentException", e.getMessage());
+			} catch (IOException e) {
+				Log.log(HESServerImpl.class.getName(), hesServer.getInstanceName(), "create", "IOException", e.getMessage());
+			}
+			HESServerImpl.hesServer = hesServer;
+		}
+		return HESServerImpl.hesServer;
+	}
+	
+	public static HESServer getInstance() {
+		return HESServerImpl.hesServer;
+	}
 
-		try {
-			Log.log(HESServerImpl.class.getName(), hesServer.getInstanceName(), "create", "setzen aller Fassaden");
-			hesServer.setBestellFassade(BestellFassadeImpl.createBestellFassade(hesServer));
-			hesServer.setKundenFassade(KundenFassadeImpl.createKundenFassade(hesServer));
-			hesServer.setLagerFassade(LagerFassadeImpl.createLagerFassade(hesServer));
-			hesServer.setLieferFassade(LieferFassadeImpl.createLieferFassade(hesServer));
-			hesServer.setRechnungsFassade(RechnungsFassadeImpl.createRechnungsFassade(hesServer));
-			hesServer.setServerController(ServerControllerImpl.createServerController(hesServer));
-		} catch (RemoteException e) {
-			Log.log(HESServerImpl.class.getName(), hesServer.getInstanceName(), "create", "RemoteException", e.getMessage());
-		}																								
-		return hesServer;
+	private void setHesRestServer(HESRestKonnektor hesRestKonnektor) {
+		this.hesRestKonnektor = hesRestKonnektor;
 	}
 
 	public Registry getServerRegistry() {

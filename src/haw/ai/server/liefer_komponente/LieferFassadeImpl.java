@@ -3,6 +3,9 @@ package haw.ai.server.liefer_komponente;
 import haw.ai.common.Log;
 import haw.ai.server.HESServerImpl;
 import haw.ai.server.bestell_komponente.Auftrag;
+import haw.ai.server.kunden_komponente.Kunde;
+import haw.ai.server.kunden_komponente.KundenFassadeImpl;
+import haw.ai.server.kunden_komponente.KundenRepository;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -59,5 +62,11 @@ public class LieferFassadeImpl extends UnicastRemoteObject implements LieferFass
 		Log.log(LieferFassadeImpl.class.getName(), hesServer.getInstanceName(), "createLieferFassade", "binding in serverregistry");
 		hesServer.getServerRegistry().rebind(LieferFassade.class.getSimpleName(), lieferFassade);
 		return lieferFassade;
+	}
+
+	public Transportauftrag findTransportauftrag(int transportauftragId) {
+		Log.log(LieferFassadeImpl.class.getName(), hesServer.getInstanceName(), "findTransportauftrag");
+		Transportauftrag transportauftrag = LieferRepository.findTransportauftrag(transportauftragId);
+		return transportauftrag;
 	}
 }
