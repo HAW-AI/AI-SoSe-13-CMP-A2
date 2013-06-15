@@ -18,7 +18,7 @@ public class HESRestServer {
 	@PUT
 	@Path("/transportauftrag/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response receiveUpdatedTransportauftrag(TransportauftragJSON transportauftragJson) {
+	public Response receiveUpdatedTransportauftrag(TransportauftragJSON transportauftragJson) throws RemoteException {
 		Transportauftrag transportauftrag = HESServerImpl.getInstance().getLieferFassade().findTransportauftrag(transportauftragJson.getId()); 
 		try {
 			HESServerImpl.getInstance().getLieferFassade().markiereTransportErfolgt(transportauftrag);
