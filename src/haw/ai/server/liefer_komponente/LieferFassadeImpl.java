@@ -3,9 +3,6 @@ package haw.ai.server.liefer_komponente;
 import haw.ai.common.Log;
 import haw.ai.server.HESServerImpl;
 import haw.ai.server.bestell_komponente.Auftrag;
-import haw.ai.server.kunden_komponente.Kunde;
-import haw.ai.server.kunden_komponente.KundenFassadeImpl;
-import haw.ai.server.kunden_komponente.KundenRepository;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;

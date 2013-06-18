@@ -1,10 +1,9 @@
-package haw.ai.transport_dienstleister;
+package haw.ai.server.liefer_komponente;
 
-import haw.ai.transport_message_protocol.TransportauftragJSON;
 import retrofit.http.Body;
 import retrofit.http.POST;
 
 public interface DummyDienstleiserApi {
-	@POST("/transportauftrag")
+	@POST("/dummydienstleister/transportauftrag")
 	void createNewTransportauftrag(@Body TransportauftragJSON transportauftrag);
 }

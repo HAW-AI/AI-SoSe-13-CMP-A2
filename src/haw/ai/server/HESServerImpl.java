@@ -3,6 +3,7 @@ package haw.ai.server;
 import haw.ai.common.Log;
 import haw.ai.server.alive.ServerController;
 import haw.ai.server.alive.ServerControllerImpl;
+import haw.ai.server.background_processing.HapsarPaymentProcessing;
 import haw.ai.server.bestell_komponente.BestellFassade;
 import haw.ai.server.bestell_komponente.BestellFassadeImpl;
 import haw.ai.server.hes_rest_konnektor.HESRestKonnektor;
@@ -41,6 +42,7 @@ public class HESServerImpl implements HESServer {
 	private Registry serverRegistry = null;
 	private Integer hesRestServerPort;
 	private HESRestKonnektor hesRestKonnektor;
+	private HapsarPaymentProcessing hapsarPaymentProcessing;
 	private static HESServerImpl hesServer;
 
 	public HESServerImpl(String clientRegistryHostname, Integer clientRegistryPort, Integer serverRegistryPort, Integer hesRestServerPort) {
@@ -69,6 +71,8 @@ public class HESServerImpl implements HESServer {
 				hesServer.setRechnungsFassade(RechnungsFassadeImpl.createRechnungsFassade(hesServer));
 				hesServer.setServerController(ServerControllerImpl.createServerController(hesServer));
 				hesServer.setHesRestServer(new HESRestKonnektor(hesServer.hesRestServerPort));
+				hesServer.setHapsarPaymentProcessing(new HapsarPaymentProcessing(hesServer));
+				hesServer.hapsarPaymentProcessing.start();
 			} catch (RemoteException e) {
 				Log.log(HESServerImpl.class.getName(), hesServer.getInstanceName(), "create", "RemoteException", e.getMessage());
 			} catch (IllegalArgumentException e) {
@@ -81,6 +85,10 @@ public class HESServerImpl implements HESServer {
 		return HESServerImpl.hesServer;
 	}
 	
+	private void setHapsarPaymentProcessing(HapsarPaymentProcessing hapsarPaymentProcessing) {
+		this.hapsarPaymentProcessing = hapsarPaymentProcessing;
+	}
+
 	public static HESServer getInstance() {
 		return HESServerImpl.hesServer;
 	}

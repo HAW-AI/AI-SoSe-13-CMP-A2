@@ -3,6 +3,9 @@ package haw.ai.server.rechnungs_komponente;
 import haw.ai.common.Log;
 import haw.ai.server.HESServerImpl;
 import haw.ai.server.bestell_komponente.Auftrag;
+import haw.ai.server.liefer_komponente.LieferFassadeImpl;
+import haw.ai.server.liefer_komponente.LieferRepository;
+import haw.ai.server.liefer_komponente.Transportauftrag;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -50,5 +53,11 @@ public class RechnungsFassadeImpl extends UnicastRemoteObject implements Rechnun
 		Log.log(RechnungsFassadeImpl.class.getName(), hesServer.getInstanceName(), "createRechnungsFassade", "binding in serverregistry");
 		hesServer.getServerRegistry().rebind(RechnungsFassade.class.getSimpleName(), rechnungsFassade);
 		return rechnungsFassade;
+	}
+
+	public Rechnung findRechnungByRechnungsnummer(Integer rechnungsNummer) {
+		Log.log(RechnungsFassadeImpl.class.getName(), hesServer.getInstanceName(), "findRechnungByRechnungsnummer");
+		Rechnung rechnung= RechnungsRepository.findRechnungByRechnungsnummer(rechnungsNummer);
+		return rechnung;
 	}
 }

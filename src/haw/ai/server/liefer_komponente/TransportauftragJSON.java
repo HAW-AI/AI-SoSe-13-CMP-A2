@@ -1,4 +1,4 @@
-package haw.ai.transport_message_protocol;
+package haw.ai.server.liefer_komponente;
 
 import java.util.Date;
 

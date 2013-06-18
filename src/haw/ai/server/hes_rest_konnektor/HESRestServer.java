@@ -5,7 +5,7 @@ import java.rmi.RemoteException;
 import haw.ai.common.Log;
 import haw.ai.server.HESServerImpl;
 import haw.ai.server.liefer_komponente.Transportauftrag;
-import haw.ai.transport_message_protocol.TransportauftragJSON;
+import haw.ai.server.liefer_komponente.TransportauftragJSON;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;

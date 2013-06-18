@@ -1,7 +1,5 @@
 package haw.ai.server.liefer_komponente;
 
-import haw.ai.transport_dienstleister.DummyDienstleiserApi;
-import haw.ai.transport_message_protocol.TransportauftragJSON;
 import retrofit.RestAdapter;
 
 public class DummyDiensleisterAdapter {

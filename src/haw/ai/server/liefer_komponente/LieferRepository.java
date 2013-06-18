@@ -1,13 +1,9 @@
 package haw.ai.server.liefer_komponente;
 
 import haw.ai.server.bestell_komponente.Auftrag;
-import haw.ai.server.kunden_komponente.Kunde;
 import haw.ai.server.persistenz.PersistenzService;
 
 import java.util.Date;
-import java.util.List;
-
-import org.hibernate.Session;
 
 public class LieferRepository {
 

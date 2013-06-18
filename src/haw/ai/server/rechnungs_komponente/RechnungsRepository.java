@@ -34,4 +34,9 @@ public class RechnungsRepository {
 		}
 	}
 
+	public static Rechnung findRechnungByRechnungsnummer(Integer rechnungsNummer) {
+		return (Rechnung) PersistenzService.getSession().get(
+				Rechnung.class, rechnungsNummer);
+	}
+
 }

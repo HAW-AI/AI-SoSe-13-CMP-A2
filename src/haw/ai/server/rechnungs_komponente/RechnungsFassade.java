@@ -26,5 +26,6 @@ public interface RechnungsFassade extends KomponentenFassade, Remote {
 	public void rechnungBezahltWennZahlungAusreichend(Rechnung rechnung) throws RemoteException;
 	public void save(Rechnung rechnung) throws RemoteException;
 	public void save(Zahlungseingang zahlungseingang) throws RemoteException;
+	public Rechnung findRechnungByRechnungsnummer(Integer rechnungsNummer);
 
 }

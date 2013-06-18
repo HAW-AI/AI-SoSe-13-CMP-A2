@@ -1,7 +1,6 @@
 package haw.ai.server.liefer_komponente;
 
 import haw.ai.server.common.HESEntity;
-import haw.ai.transport_message_protocol.TransportauftragJSON;
 
 import java.util.Date;
 
