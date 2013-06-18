@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>HESSystem</groupId>
-	<artifactId>Aufgabe4</artifactId>
+	<artifactId>HapsarPayment</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<properties>
 		<jdk.version>1.6</jdk.version>
@@ -26,7 +26,7 @@
 					<target>${jdk.version}</target>
 					<archive>
 						<manifest>
-							<mainClass>com.mkyong.core.App</mainClass>
+							<mainClass>haw.ai.hapsar_payment.HapsarPayment</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
@@ -39,7 +39,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>com.mkyong.core.App</mainClass>
+							<mainClass>haw.ai.hapsar_payment.HapsarPayment</mainClass>
 							<classpathPrefix>dependency-jars/</classpathPrefix>
 						</manifest>
 					</archive>
@@ -50,7 +50,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>fully.qualified.MainClass</mainClass>
+							<mainClass>haw.ai.hapsar_payment.HapsarPayment</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
@@ -102,16 +102,12 @@
 			<version>1.8</version>
 		</dependency>
 
-
-		<!-- Hibernate library dependecy start -->
-		<!-- <dependency> <groupId>dom4j</groupId> <artifactId>dom4j</artifactId> 
-			<version>1.6.1</version> </dependency> <dependency> <groupId>commons-logging</groupId> 
-			<artifactId>commons-logging</artifactId> <version>1.1.1</version> </dependency> 
-			<dependency> <groupId>commons-collections</groupId> <artifactId>commons-collections</artifactId> 
-			<version>3.2.1</version> </dependency> <dependency> <groupId>cglib</groupId> 
-			<artifactId>cglib</artifactId> <version>2.2</version> </dependency> -->		<!-- Hibernate library dependecy end -->
-
-		<!-- <dependency> <groupId>javax.transaction</groupId> <artifactId>jta</artifactId> 
-			<version>1.1</version> </dependency> -->
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>2.1.0</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 </project>
