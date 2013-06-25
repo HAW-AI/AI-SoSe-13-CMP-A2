@@ -1,6 +1,8 @@
 package haw.ai.server.liefer_komponente;
 
+import haw.ai.common.Log;
 import retrofit.RestAdapter;
+import retrofit.client.Response;
 
 public class DummyDiensleisterAdapter {
 	private static final String DummyDienstleisterApiUrl = "http://localhost:8080/";
@@ -20,6 +22,7 @@ public class DummyDiensleisterAdapter {
 				transportauftrag.getId(), transportauftrag.getAusgangsDatum(),
 				transportauftrag.isLieferungErfolgt(),
 				transportauftrag.getLieferDatum());
-		dummyDienstleisterApi.createNewTransportauftrag(json);
+		Log.log(DummyDiensleisterAdapter.class.getSimpleName(), "sendNewTransportauftrag", json.toString());
+		dummyDienstleisterApi.createNewTransportauftrag(json, new DummyDienstleisterCallback<Response>());
 	}
 }

@@ -30,8 +30,8 @@ public class HapsarPaymentProcessing extends Thread {
 			List<String> result = jedis.blpop(0, request);
 			Integer rechnungsNummer = Integer.valueOf(result.get(0));
 			Integer rechnungsBetrag = Integer.valueOf(result.get(1));
-			Rechnung rechnung = hesServer.getRechnungsFassade().findRechnungByRechnungsnummer(rechnungsNummer);
 			try {
+				Rechnung rechnung = hesServer.getRechnungsFassade().findRechnungByRechnungsnummer(rechnungsNummer);
 				hesServer.getRechnungsFassade().erstelleZahlungseingang(rechnung, DateUtil.now(), rechnungsBetrag);
 			} catch (RemoteException e) {
 				Log.log(HapsarPaymentProcessing.class.getSimpleName(), "run", "erstelleZahlungseingang failed");

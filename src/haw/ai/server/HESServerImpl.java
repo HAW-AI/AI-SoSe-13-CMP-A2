@@ -56,7 +56,7 @@ public class HESServerImpl implements HESServer {
 
 	public static HESServer getInstance(String clientRegistryHostname,
 			Integer clientRegistryPort, String serverRegistryPort, String hesRestServerPort) {
-		if (hesServer == null) {
+		if (HESServerImpl.hesServer == null) {
 			Integer serverRegistryPortFromString = Integer.valueOf(serverRegistryPort);
 			Integer hesRestServerPortFromString = Integer.valueOf(hesRestServerPort);
 			HESServerImpl hesServer = new HESServerImpl(clientRegistryHostname,

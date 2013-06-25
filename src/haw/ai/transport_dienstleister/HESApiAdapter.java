@@ -16,11 +16,13 @@ public class HESApiAdapter {
 		this.hesRestApi = restAdapter.create(HESApi.class);
 	}
 
-	public void updateTransportauftrag(TransportauftragJSON transportauftrag) {
+	public void updateTransportauftrag(TransportauftragJSON transportauftrag, HESApiCallback hesApiCallback) {
 		TransportauftragJSON json = new TransportauftragJSON(
 				transportauftrag.getId(), transportauftrag.getAusgangsDatum(),
 				true,
 				transportauftrag.getLieferDatum());
-		hesRestApi.updateTransportauftrag(transportauftrag.getId(), json);
+		System.out.println(HESApiAdapter.class.getSimpleName() + ": send updateTransportauftrag");
+		System.out.println("transportauftragID: " + transportauftrag.getId());
+		hesRestApi.updateTransportauftrag(transportauftrag.getId(), json, hesApiCallback);
 	}
 }

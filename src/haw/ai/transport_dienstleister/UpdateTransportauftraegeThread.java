@@ -18,7 +18,7 @@ public class UpdateTransportauftraegeThread extends Thread {
 				Thread.sleep(5000);
 				List<TransportauftragJSON> auftraege = DummyDienstleisterKonnektor.getTransportauftraege();
 				if (!auftraege.isEmpty()) {
-					this.adapter.updateTransportauftrag(auftraege.get(0));
+					this.adapter.updateTransportauftrag(auftraege.get(0), new HESApiCallback());
 					auftraege.remove(0);
 				}
 			} catch (InterruptedException e) {

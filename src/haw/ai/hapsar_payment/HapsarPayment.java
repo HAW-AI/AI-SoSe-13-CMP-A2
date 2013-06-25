@@ -10,6 +10,7 @@ public class HapsarPayment {
 	public static void main(String[] args) {
 		Jedis jedis = new Jedis(REDIS_HOST, REDIS_PORT);
 		jedis.rpush(HAPSAR_QUEUE_NAME, argumentsToHapsarQueueFormat(args[0], args[1]));
+		jedis.quit();
 	}
 	
 	public static String argumentsToHapsarQueueFormat(String rechnungsNr, String betrag) {
