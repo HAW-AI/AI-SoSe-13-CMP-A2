@@ -1,6 +1,7 @@
 package haw.ai.server.background_processing;
 
 import java.rmi.RemoteException;
+import java.util.Arrays;
 import java.util.List;
 
 import redis.clients.jedis.Jedis;
@@ -28,9 +29,13 @@ public class HapsarPaymentProcessing extends Thread {
 		
 		while(true) {
 			List<String> result = jedis.blpop(0, request);
-			Integer rechnungsNummer = Integer.valueOf(result.get(0));
-			Integer rechnungsBetrag = Integer.valueOf(result.get(1));
+			String[] parts = result.get(1).split(" ");
+			List<String> partsList = Arrays.asList(parts);
+			
+			Integer rechnungsNummer = Integer.valueOf(partsList.get(0));
+			Integer rechnungsBetrag = Integer.valueOf(partsList.get(1));
 			try {
+				Log.log(HapsarPaymentProcessing.class.getSimpleName(), "erstelleZahlungseingang", "rechnungsNummer: " + rechnungsNummer, "rechnungsBetrag: " + rechnungsBetrag);
 				Rechnung rechnung = hesServer.getRechnungsFassade().findRechnungByRechnungsnummer(rechnungsNummer);
 				hesServer.getRechnungsFassade().erstelleZahlungseingang(rechnung, DateUtil.now(), rechnungsBetrag);
 			} catch (RemoteException e) {

@@ -9,12 +9,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
+@Table(name = "Transportauftrag", uniqueConstraints = {
+		@UniqueConstraint(columnNames = "id"),
+		@UniqueConstraint(columnNames = "lieferung_id") })
 public class Transportauftrag extends HESEntity {
 
 	@Id
 	@GeneratedValue
+	@Column(name = "id", unique = true, nullable = false)
 	private int id;
 	@Column(name = "ausgangsDatum")
 	private Date ausgangsDatum;

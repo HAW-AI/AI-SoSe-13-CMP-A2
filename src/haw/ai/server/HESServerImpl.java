@@ -72,6 +72,7 @@ public class HESServerImpl implements HESServer {
 				hesServer.setServerController(ServerControllerImpl.createServerController(hesServer));
 				hesServer.setHesRestServer(new HESRestKonnektor(hesServer.hesRestServerPort));
 				hesServer.setHapsarPaymentProcessing(new HapsarPaymentProcessing(hesServer));
+				hesServer.hesRestKonnektor.start();
 				hesServer.hapsarPaymentProcessing.start();
 			} catch (RemoteException e) {
 				Log.log(HESServerImpl.class.getName(), hesServer.getInstanceName(), "create", "RemoteException", e.getMessage());

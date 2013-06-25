@@ -1,5 +1,6 @@
 package haw.ai.transport_dienstleister;
 
+import haw.ai.common.Log;
 import haw.ai.server.liefer_komponente.TransportauftragJSON;
 
 import javax.ws.rs.Consumes;
@@ -16,6 +17,7 @@ public class DummyDienstleisterServer {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response receiveNewTransportauftrag(TransportauftragJSON transportauftrag) {
 		DummyDienstleisterKonnektor.addTransportauftrag(transportauftrag);
+		Log.log(DummyDienstleisterServer.class.getSimpleName(), "receiveNewTransportauftrag", transportauftrag.toString());
 		return Response.status(202).build();
-	}
+	}	
 }

@@ -50,4 +50,11 @@ public class TransportauftragJSON {
 	public void setLieferDatum(Date lieferDatum) {
 		this.lieferDatum = lieferDatum;
 	}
+	
+	@Override
+	public String toString() {
+		return "TransportauftragJSON [id=" + id + ", ausgangsDatum="
+				+ ausgangsDatum + ", lieferungErfolgt=" + lieferungErfolgt
+				+ ", lieferDatum=" + lieferDatum + "]";
+	}
 }

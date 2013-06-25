@@ -4,6 +4,9 @@ import haw.ai.server.bestell_komponente.Auftrag;
 import haw.ai.server.persistenz.PersistenzService;
 
 import java.util.Date;
+import java.util.List;
+
+import org.hibernate.Query;
 
 public class LieferRepository {
 
@@ -36,8 +39,17 @@ public class LieferRepository {
 	}
 
 	public static Transportauftrag findTransportauftrag(int transportauftragId) {
-		return (Transportauftrag) PersistenzService.getSession().get(
-				Transportauftrag.class, transportauftragId);
+		Transportauftrag transportauftrag = null;
+		try {
+			Query query = PersistenzService.getSession().createQuery("from Transportauftrag where id = :transportauftragId");
+			query.setParameter("transportauftragId", transportauftragId);
+			List<Transportauftrag> list = query.list();
+			if (!list.isEmpty()) {
+				transportauftrag = list.get(0);		
+			}			
+		} catch (Exception e) {
+		}
+		return transportauftrag;
 	}
 
 }
